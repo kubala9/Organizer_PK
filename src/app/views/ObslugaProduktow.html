@@ -1,0 +1,35 @@
+<h2>
+    <span>Baza produktów</span>
+</h2>
+<md-content>
+    <div class="withButton">
+        <label>Wyszukaj produkt: <input ng-model="searchText" placeholder="Wpisz nazwę produktu..."></label>
+
+        <md-button class="md-raised md-primary toRight" ng-click="$ctrl.modyfikacja()">
+            Dodaj nowy produkt
+        </md-button>
+    </div>
+    <hr>
+
+    <md-list>
+        <md-list-item class="md-3-line" ng-repeat="produkt in $ctrl.produkty | filter:searchText | orderBy: produkt.id : true" ng-click="$ctrl.modyfikacja(produkt)">
+            <div class="md-list-item-text">
+                <h3>{{produkt.nazwa }} </h3>
+                <h4>{{produkt.opis}}</h4>
+ 
+                <div class="md-secondary">Stan: {{produkt.stan}} szt.</div>
+            </div>
+            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.modyfikacja(produkt)">
+                <ng-md-icon  icon="mode_edit" style="fill: grey;" size="30"></ng-md-icon>
+            </md-button>
+
+            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.usun(produkt)">
+                <ng-md-icon icon="delete" style="fill: grey;" size="30"></ng-md-icon>
+            </md-button>
+        </md-list-item>
+    </md-list>
+
+    <md-button class="md-raised md-primary" ng-click="$ctrl.modyfikacja()">
+        Dodaj nowy produkt
+    </md-button>
+</md-content>

@@ -1,0 +1,159 @@
+<div layout="row">
+    <div flex>
+        <h2 class="text-center">Zaloguj jako sprzedawca</h2>
+
+        <form name="loginSprzedajacy">
+            <div>
+                <md-input-container>
+                    <label>PESEL</label>
+                    <input name="pesel" ng-model="logujSprzedajacy.pesel" type="text" required pattern="[0-9]{11}" />
+
+                    <div ng-messages="loginSprzedajacy.pesel.$error">
+                        <div ng-message-exp="['required', 'pattern']">
+                            Wpisz prawidłowy PESEL!
+                        </div>
+                    </div>
+                </md-input-container>
+            </div>
+
+            <div>
+                <md-input-container>
+                    <label>Hasło</label>
+                    <input name="haslo" ng-model="logujSprzedajacy.haslo" type="password" required minlength="6" />
+
+                    <div ng-messages="loginSprzedajacy.haslo.$error" multiple md-auto-hide="true">
+                        <div ng-message-exp="['required', 'minlength']">
+                            Wpisz przynajmniej 6 znaków!
+                        </div>
+                    </div>
+                </md-input-container>
+            </div>
+
+            <md-button ng-click="$ctrl.logujJakoSprzedajacy()" class="md-primary md-raised" ng-disabled="!loginSprzedajacy.$valid">
+                Zaloguj się
+            </md-button>
+        </form>
+    </div>
+
+    <div flex>
+        <h2 class="text-center">Zaloguj jako kupujący</h2>
+
+        <form name="loginKupujacy">
+            <div>
+                <md-input-container>
+                    <label>Email</label>
+                    <input name="email"  ng-model="logujKupujacy.email" type="text" required pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
+                    <div ng-messages="loginKupujacy.email.$error">
+                        <div ng-message-exp="['required', 'pattern']">
+                            Wpisz email klienta!
+                        </div>
+                    </div>
+                </md-input-container>
+            </div>
+
+            <div>
+                <md-input-container>
+                    <label>Hasło</label>
+                    <input name="haslo" ng-model="logujKupujacy.haslo" type="password" required minlength="6" />
+
+                    <div ng-messages="loginKupujacy.haslo.$error" multiple md-auto-hide="true">
+                        <div ng-message-exp="['required', 'minlength']">
+                            Wpisz przynajmniej 6 znaków!
+                        </div>
+                    </div>
+                </md-input-container>
+            </div>
+
+            <md-button ng-click="$ctrl.logujJakoKupujacy()" class="md-primary md-raised" ng-disabled="!loginKupujacy.$valid">
+                Zaloguj się
+            </md-button>
+        </form>
+    </div>
+    <div flex>
+        <h2 class="text-center">Zarejestruj się jako kupujący</h2>
+
+        <form name="signupKupujacy">
+                <div>
+                    <md-input-container>
+                        <label>Imię</label>
+                        <input name="imie"  ng-model="rejestrujKupujacy.imie" type="text" required />
+                        <div ng-messages="signupKupujacy.imie.$error" multiple md-auto-hide="true">
+                            <div ng-message="required">
+                                Wpisz imię klienta!
+                            </div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label>Nazwisko</label>
+                        <input name="nazwisko"  ng-model="rejestrujKupujacy.nazwisko" type="text" required />
+
+                        <div ng-messages="signupKupujacy.nazwisko.$error" multiple md-auto-hide="true">
+                            <div ng-message="required">
+                                Wpisz nazwisko klienta!
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-input-container>
+                        <label>PESEL</label>
+                        <input name="pesel"  ng-model="rejestrujKupujacy.pesel" type="text" required pattern="[0-9]{11}" />
+                        <div ng-messages="signupKupujacy.pesel.$error">
+                            <div ng-message-exp="['required', 'pattern']">
+                                Wpisz prawidłowy PESEL!
+                            </div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label>Email</label>
+                        <input name="email"  ng-model="rejestrujKupujacy.email" type="text" required pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
+                        <div ng-messages="signupKupujacy.email.$error">
+                            <div ng-message-exp="['required', 'pattern']">
+                                Wpisz email klienta!
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-input-container>
+                        <label>Nr telefonu</label>
+                        <input name="telefon"  ng-model="rejestrujKupujacy.telefon" type="text" required />
+
+                        <div ng-messages="signupKupujacy.telefon.$error" multiple md-auto-hide="true">
+                            <div ng-message="required">
+                                Wpisz nr telefonu klienta!
+                            </div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label>Adres</label>
+                        <input name="adres"  ng-model="rejestrujKupujacy.adres" type="text" required />
+                        <div ng-messages="signupKupujacy.adres.$error" multiple md-auto-hide="true">
+                            <div ng-message="required">
+                                Wpisz adres klienta!
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div>
+                    <md-input-container>
+                        <label>Hasło</label>
+                        <input name="haslo"  ng-model="rejestrujKupujacy.haslo" type="password" required minlength="6" />
+                        <div ng-messages="signupKupujacy.haslo.$error" multiple md-auto-hide="true">
+                            <div ng-message-exp="['required', 'minlength']">
+                                Wpisz przynajmniej 6 znaków!
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+            <md-button ng-click="$ctrl.rejestrujJakoKupujacy()" class="md-primary md-raised" ng-disabled="!signupKupujacy.$valid">
+                Zarejestuj się
+            </md-button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+<h2>
+    <span>Zarządzanie klientami</span>
+</h2>
+
+<md-content>
+    <md-list>
+        <md-list-item ng-repeat="kupujacy in $ctrl.kupujacy" class="md-3-line" ng-click="$ctrl.modyfikacja(kupujacy)">
+            <div class="md-list-item-text">
+                <h3>{{kupujacy.imie }} {{kupujacy.nazwisko}}</h3>
+                <h4>{{kupujacy.email}}</h4>
+                <md-button class="md-secondary md-icon-button" ng-click="$ctrl.modyfikacja(kupujacy)">
+                    <ng-md-icon  icon="mode_edit" style="fill: grey;" size="30"></ng-md-icon>
+                </md-button>
+                <md-button class="md-secondary md-icon-button" ng-click="$ctrl.usun(kupujacy)">
+                    <ng-md-icon icon="delete" style="fill: grey;" size="30"></ng-md-icon>
+                </md-button> 
+            </div> 
+        </md-list-item>
+    </md-list>
+
+    <md-button class="md-raised md-primary" ng-click="$ctrl.modyfikacja()">
+        Dodaj nowego klienta
+    </md-button>
+
+</md-content> 

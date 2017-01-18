@@ -1,0 +1,62 @@
+<h2>
+    <span flex>Sklep internetowy</span>
+</h2>
+<md-button class="md-raised md-primary" ng-click="$ctrl.pokazKoszyk()">
+    Twój koszyk ({{ $ctrl.koszyk.length }})
+</md-button>
+ 
+<md-content>
+    <label>Wyszukaj  produkt: <input ng-model="searchText" placeholder="Wpisz nazwę produktu..."></label>
+    
+    <md-list>
+        <md-list-item class="bold">
+            <div layout="column" style="width: 40%; padding-right: 10px;" >
+                <div flex>
+                    Produkt
+                </div>
+            </div>
+            <div layout="column" style="width: 15%;" class="text-center">
+                <div flex>Cena</div>
+            </div>
+            <div layout="column" style="width: 10%;" class="text-center">
+                <div flex>Refundacja</div>
+            </div>
+            <div layout="column" style="width: 15%;" class="text-center">
+                Na receptę
+            </div>
+            <div layout="column" style="width: 10%;" class="text-center">
+                Stan
+            </div>
+        </md-list-item>
+              
+          <md-list-item ng-repeat="produkt in $ctrl.produkty | filter:searchText | orderBy: produkt.id : true" ng-click="$ctrl.dodajDoKoszyka(produkt)" class="text-center">
+               <div layout="column" style="width: 40%; padding-right: 10px;" >
+                   <div flex>
+                        <h3>{{produkt.nazwa }}</h3>
+                        <p>{{produkt.opis}}</p>
+                    </div>
+                   </div>
+                   <div layout="column" style="width: 15%" class="text-center">
+                <div flex>{{produkt.cena | number:2 }} PLN</div>
+                   </div>
+                <div layout="column" style="width: 10%;" class="text-center">
+                <div flex>{{produkt.refundacja | number : 0}}%</div>
+            </div>
+             <div layout="column" style="width: 15%;" class="text-center">
+                 <ng-md-icon icon="check" class="inline" style="fill: grey;" size="30" ng-show="produkt.recepta"></ng-md-icon>
+                 <ng-md-icon icon="close" class="inline" style="fill: grey;" size="30" ng-show="!produkt.recepta"></ng-md-icon>
+            </div>
+              <div layout="column" style="width: 10%;" class="text-center">
+                  {{ produkt.stan }} szt.
+              </div>
+              <div layout="column" style="width: 10%;" class="text-center">
+                <md-button class="md-secondary md-icon-button" ng-click="$ctrl.dodajDoKoszyka(produkt)">
+                    <ng-md-icon icon="add" style="fill: grey;" size="30"></ng-md-icon>
+                </md-button>
+              </div>
+        </md-list-item>
+        
+    </md-list>
+
+   
+</md-content>

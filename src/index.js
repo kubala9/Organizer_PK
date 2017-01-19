@@ -22,45 +22,47 @@ import {start} from './app/controllers/Start';
 
 import Notyfikacje from './app/services/Notyfikacje';
 
-import {obslugasprzedajacy} from './app/controllers/ObslugaSprzedajacy';
-import Sprzedajacy from './app/services/Sprzedajacy';
+import {obslugauzytkownika} from './app/controllers/ObslugaUzytkownika';
+import Uzytkownik from './app/services/Uzytkownik';
 
-import {obslugakupujacy} from './app/controllers/ObslugaKupujacy.js';
-import Kupujacy from './app/services/Kupujacy';
+import {obslugaklienta} from './app/controllers/ObslugaKlienta.js';
+import Klient from './app/services/Klient';
 
-import {obslugaproduktow} from './app/controllers/ObslugaProduktow.js';
-import Produkt from './app/services/Produkt';
+import {obslugaprojektu} from './app/controllers/ObslugaProjektu.js';
+import Projekt from './app/services/Projekt';
 
-import {obslugazamowien} from './app/controllers/ObslugaZamowien.js';
+import {obslugazadan} from './app/controllers/ObslugaZadan.js';
+import Zadania from './app/services/Zadania';
 
-import {obslugasprzedazy} from './app/controllers/ObslugaSprzedazy';
-import Sprzedaz from './app/services/Sprzedaz';
+import {obsluganotatek} from './app/controllers/ObslugaNotatek';
+import Notatki from './app/services/Notatki';
 
 angular
-  .module('apteka', ['ui.router', 'ngMaterial', 'ngMdIcons', 'ngMessages', 'ngStorage'])
+  .module('organizer', ['ui.router', 'ngMaterial', 'ngMdIcons', 'ngMessages', 'ngStorage'])
   .config(routesConfig)
-  .component('apteka', main)
-  .component('aptekaHeader', header)
-  .component('aptekaMenu', menu)
-  .component('aptekaFooter', footer)
+  .component('organizer', main)
+  .component('organizerHeader', header)
+  .component('organizerMenu', menu)
+  .component('organizerFooter', footer)
 
     .service('Notyfikacje', Notyfikacje)
 
     .component('start', start)
 
-    .component('obslugaSprzedajacy', obslugasprzedajacy)
-    .service('Sprzedajacy', Sprzedajacy)
+    .component('obslugaUzytkownika', obslugauzytkownika)
+    .service('Uzytkownik', Uzytkownik)
 
-   .component('obslugaKupujacy', obslugakupujacy)
-   .service('Kupujacy', Kupujacy)
+   .component('obslugaKlienta', obslugaklienta)
+   .service('Klient', Klient)
 
-    .component('obslugaProduktow', obslugaproduktow)
-    .service('Produkt', Produkt)
+    .component('obslugaProjektu', obslugaprojektu)
+    .service('Projekt', Projekt)
 
-    .component('obslugaZamowien', obslugazamowien)
+    .component('obslugaZadan', obslugazadan)
+     .service('Zadania', Zadania)
 
-    .component('obslugaSprzedazy', obslugasprzedazy)
-    .service('Sprzedaz', Sprzedaz)
+    .component('obslugaNotatek', obsluganotatek)
+    .service('Notatki', Notatki)
 
     .run(($transitions, $rootScope, $state) => {
         $transitions.onStart({ }, function(trans) {
@@ -68,6 +70,6 @@ angular
         });
 
         if (!$rootScope.zalogowany) {
-            $state.go('apteka.start');
+            $state.go('organizer.start');
         }
     });

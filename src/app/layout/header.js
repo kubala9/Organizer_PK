@@ -9,7 +9,7 @@ export const header = {
 
     $scope.wyloguj = () => {
       $rootScope.zalogowany = {};
-      $state.go('apteka.start');
+      $state.go('organizer.start');
       Notyfikacje.powiadomienie('Zostałeś wylogowany.');
     };
   }

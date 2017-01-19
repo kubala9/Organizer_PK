@@ -2,71 +2,54 @@ import angular from 'angular';
 import tpl from '../views/Start.html';
 
 class Start {
-  constructor($rootScope, $scope, $state, Notyfikacje, Sprzedajacy, Kupujacy) {
+  constructor($rootScope, $scope, $state, Notyfikacje, Uzytkownik) {
     "ngInject";
 
-    this.sprzedajacy = Sprzedajacy.pobierz();
-    this.kupujacy = Kupujacy.pobierz();
+    this.uzytkownik = Uzytkownik.pobierz();
 
-    $scope.logujSprzedajacy = {
-      pesel: '',
+    $scope.logujUzytkownik = {
+      login: '',
       haslo: ''
     };
-    this.logujJakoSprzedajacy = () => {
-      var pesel = $scope.logujSprzedajacy.pesel;
-      var haslo = $scope.logujSprzedajacy.haslo;
+    this.logujJakoUzytkownik = () => {
+      var login = $scope.logujUzytkownik.login;
+      var haslo = $scope.logujUzytkownik.haslo;
 
-      var user = this.sprzedajacy.filter(item => item.pesel === pesel && item.haslo === haslo);
+      var user = this.uzytkownik.filter(item => item.login === login && item.haslo === haslo);
       $rootScope.zalogowany = user[0];
-      $rootScope.zalogowany.sprzedajacy = 1;
+      $rootScope.zalogowany.uzytkownik = 1;
 
-      Notyfikacje.powiadomienie('Zalogowałeś się jako sprzedający.');
+      Notyfikacje.powiadomienie('Zalogowałeś się.');
 
-      $state.go('apteka.sprzedajacy');
+      $state.go('organizer.uzytkownik');
     };
 
-    $scope.logujKupujacy = {
-      email: '',
-      haslo: ''
-    };
-    this.logujJakoKupujacy = () => {
-      var email = $scope.logujKupujacy.email;
-      var haslo = $scope.logujKupujacy.haslo;
-
-      var user = this.kupujacy.filter(item => item.email === email && item.haslo === haslo);
-
-      $rootScope.zalogowany = user[0];
-      $rootScope.zalogowany.kupujacy = 1;
-
-      Notyfikacje.powiadomienie('Zalogowałeś się jako kupujący.');
-
-      $state.go('apteka.zamowienie');
-    };
+   
 
 
-    var rejestrujKupujacy = {
+    var rejestrujUzytkownik = {
       imie: '',
       nazwisko: '',
-      pesel: '',
+      dane: '',
       email: '',
       telefon: '',
-      adres: '',
+      login: '',
       haslo: ''
     };
-    $scope.rejestrujKupujacy = angular.copy(rejestrujKupujacy);
-    this.rejestrujJakoKupujacy = () => {
-      var email = $scope.rejestrujKupujacy.email;
-      var user = this.kupujacy.filter(item => item.email === email);
+    $scope.rejestrujUzytkownik = angular.copy(rejestrujUzytkownik);
+    this.rejestrujJakoUzytkownik = () => {
+      var login = $scope.rejestrujUzytkownik.login;
+      var user = this.uzytkownik.filter(item => item.login === login);
 
       if (user.length !== 0) {
-        Notyfikacje.powiadomienie('Ten adres e-mail, jest już zarejestrowany');
+        Notyfikacje.powiadomienie('Użytkownik o takim loginie już istnieje');
       } else {
 
-        if (Kupujacy.nowy($scope.rejestrujKupujacy)) {
-          $scope.logujKupujacy.email = $scope.rejestrujKupujacy.email;
-          $scope.rejestrujKupujacy = rejestrujKupujacy;
-          $scope.signupKupujacy.$setPristine();
-          $scope.signupKupujacy.setUntouched();
+        if (Uzytkownik.nowy($scope.rejestrujUzytkownik)) {
+          $scope.logujUzytkownik.login = $scope.rejestrujUzytkownik.login;
+          $scope.rejestrujUzytkownik = rejestrujUzytkownik;
+          $scope.signupUzytkownik.$setPristine();
+          $scope.signupUzytkownik.setUntouched();
 
           Notyfikacje.powiadomienie('Zostałeś zarejestrowany, możesz się zalogować');
         }

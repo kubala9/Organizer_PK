@@ -1,31 +1,28 @@
-import tpl from '../views/ObslugaKupujacy.html';
-import formularz from '../views/_formularzKupujacy.html';
+import tpl from '../views/ObslugaKlienta.html';
 
-class ObslugaKupujacy {
+
+class ObslugaKlienta {
   
-  constructor($scope, $mdDialog, Kupujacy, Notyfikacje) {
+  constructor($scope, $mdDialog, Klient, Notyfikacje) {
     "ngInject";
-    this.kupujacy = [];
+    this.klient = [];
     var timeout = null;
 
     let wczytaj = () => {
-      this.kupujacy = Kupujacy.pobierz();
+      this.klient = Klient.pobierz();
       $scope.$applyAsync();
       timeout = setTimeout(wczytaj, 5000);
     };
     wczytaj();
 
-    let modyfikowanie = ($scope, Notyfikacje, kupujacy) => {
-      if (typeof kupujacy !== "undefined") {
-        $scope.kupujacy = Object.assign({}, kupujacy);
-        $scope.kupujacy.haslo = '';
+    let modyfikowanie = ($scope, Notyfikacje, klient) => {
+      if (typeof klient !== "undefined") {
+        $scope.klient = Object.assign({}, klient);
+        $scope.klient.haslo = '';
         $scope.isNew = false;
       } else {
-        $scope.kupujacy = {
-          imie: '',
-          nazwisko: '',
-          pesel: '',
-          haslo: '',
+        $scope.klient = {
+          nazwa: '',
           email: '',
           telefon: '',
           adres: ''
@@ -38,13 +35,13 @@ class ObslugaKupujacy {
       };
 
       $scope.save = () => {
-        if ($scope.kupujacy.id) {
-          Kupujacy.edytuj($scope.kupujacy);
+        if ($scope.klient.id) {
+          Klient.edytuj($scope.klient);
 
           Notyfikacje.zamknij();
-          Notyfikacje.powiadomienie('Klient została zapisany!');
+          Notyfikacje.powiadomienie('Klient został zapisany!');
         } else {
-          Kupujacy.nowy($scope.kupujacy);
+          Klient.nowy($scope.klient);
 
           Notyfikacje.zamknij();
           Notyfikacje.powiadomienie('Klient został dodany!');
@@ -52,18 +49,17 @@ class ObslugaKupujacy {
       };
     };
 
-    this.modyfikacja = function modyfikacja(kupujacy) {
+    this.modyfikacja = function modyfikacja(klient) {
       $mdDialog.show({
-        template: formularz,
-        locals: {kupujacy}, //strzykujemy aktualnie dodawanego/edytowanego sprzedawce
+        locals: {klient}, 
         controller: modyfikowanie
       });
     };
 
-    this.usun = function usun(kupujacy) {
+    this.usun = function usun(klient) {
       Notyfikacje.potwierdzenie('Czy chcesz usunąć klienta?', 'Tak', 'Nie')
           .then(function() {
-            Kupujacy.usun(kupujacy);
+            Klient.usun(klient);
             Notyfikacje.zamknij();
             Notyfikacje.powiadomienie('Klient został usunięty!');
           }, function() {
@@ -78,7 +74,7 @@ class ObslugaKupujacy {
   }
 }
 
-export const obslugakupujacy = {
+export const obslugaklienta = {
   template: tpl,
-  controller: ObslugaKupujacy
+  controller: ObslugaKlienta
 };

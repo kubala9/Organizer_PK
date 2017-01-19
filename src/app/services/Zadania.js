@@ -1,20 +1,20 @@
 import angular from 'angular';
 
-class Sprzedaz {
+class Zadania {
     constructor($localStorage) {
         "ngInject";
 
         this.lista = [];
 
         this.wczytaj = function wczytaj() {
-            if (angular.isDefined($localStorage.sprzedaz)) {
-                this.lista = $localStorage.sprzedaz;
+            if (angular.isDefined($localStorage.zadanie)) {
+                this.lista = $localStorage.zadanie;
             }
         };
 
         this.zapisz = function zapisz() {
             if (angular.isArray(this.lista)) {
-                $localStorage.sprzedaz = this.lista;
+                $localStorage.zadanie = this.lista;
             }
         };
 
@@ -39,15 +39,15 @@ class Sprzedaz {
         };
     }
 
-    nowy(sprzedaz) {
+    nowy(zadanie) {
         if (this.lista.length === 0) {
-            sprzedaz.id = 1;
+            zadanie.id = 1;
         } else {
-            sprzedaz.id = this.lista[this.lista.length - 1].id + 1;
+            zadanie.id = this.lista[this.lista.length - 1].id + 1;
         }
 
-        sprzedaz.data = new Date().getTime();
-        this.lista.push(sprzedaz);
+        zadanie.data = new Date().getTime();
+        this.lista.push(zadanie);
         this.zapisz();
 
         return true;
@@ -59,22 +59,22 @@ class Sprzedaz {
         return this.lista;
     }
 
-    edytuj(sprzedaz) {
-        var i = this.lista.findIndex((element, index, array) => element.id === sprzedaz.id);
+    edytuj(zadanie) {
+        var i = this.lista.findIndex((element, index, array) => element.id === zadanie.id);
 
         if (i === -1) {
             return false;
         }
 
-        sprzedaz.data = new Date().getTime();
-        this.lista[i] = sprzedaz;
+        zadanie.data = new Date().getTime();
+        this.lista[i] = zadanie;
         this.zapisz();
 
         return true;
     }
 
-    usun(sprzedaz) {
-        var i = this.lista.indexOf(sprzedaz);
+    usun(zadanie) {
+        var i = this.lista.indexOf(zadanie);
         if (i === -1) {
             return false;
         }
@@ -99,4 +99,4 @@ class Sprzedaz {
     }
 }
 
-export default Sprzedaz;
+export default Zadania;

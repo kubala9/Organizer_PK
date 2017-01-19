@@ -1,24 +1,22 @@
 import angular from 'angular';
-import tpl from '../views/ObslugaZamowien.html';
-import formularz from '../views/_formularzZamowienie.html';
-import formularz2 from '../views/_formularzKoszyk.html';
+import tpl from '../views/ObslugaZadan.html';
 
-class ObslugaZamowien {
+class ObslugaZadan {
  
-  constructor($rootScope, $scope, $mdDialog, Notyfikacje, Produkt, Sprzedaz) {
+  constructor($rootScope, $scope, $mdDialog, Notyfikacje, Produkt, Zadania) {
       var self = this;
 
-      this.produkty = Produkt.pobierz(true);
+      this.projekty = Produkt.pobierz(true);
       this.koszyk = [];
 
       //dodawanie rzeczy do koszyka
-      let dodawanie = ($scope, produkt, koszyk) => {
-          $scope.produkt = produkt;
+      let dodawanie = ($scope, projekt, koszyk) => {
+          $scope.projekt = projekt;
           $scope.ilosc = 1;
 
           $scope.save = () => {
               koszyk.push({
-                  id: produkt.id,
+                  id: projekt.id,
                   ilosc: $scope.ilosc
               });
 
@@ -45,36 +43,36 @@ class ObslugaZamowien {
           $scope.$watch('koszyk', () => {
               var sumaZl = 0;
               var sumaSzt = 0;
-              $scope.koszyk.forEach(produkt => {
-                  sumaZl += produkt.wartosc;
-                    sumaSzt += parseInt(produkt.ilosc, 10);
+              $scope.koszyk.forEach(projekt => {
+                  sumaZl += projekt.wartosc;
+                    sumaSzt += parseInt(projekt.ilosc, 10);
                 });
               $scope.sumaSzt = sumaSzt;
               $scope.sumaZl = sumaZl;
           }, true);
 
-          $scope.usunProdukt = produkt => {
-              var i = $scope.koszyk.indexOf(produkt);
+          $scope.usunProdukt = projekt => {
+              var i = $scope.koszyk.indexOf(projekt);
 
               koszyk.splice(i, 1);
               $scope.koszyk.splice(i, 1);
           };
 
           $scope.save = () => {
-              var sprzedaz = Sprzedaz.getPusty();
+              var zadanie = Zadania.getPusty();
 
-              sprzedaz.produkty = $scope.koszyk.map(item => {
+              zadanie.projekty = $scope.koszyk.map(item => {
                     return {
                         id: item.id,
                         ilosc: item.ilosc
                     };
               });
 
-              sprzedaz.kupujacy = $rootScope.zalogowany.id;
+              zadanie.kupujacy = $rootScope.zalogowany.id;
 
-              if (Sprzedaz.nowy(sprzedaz)) {
-                  sprzedaz.produkty.forEach(produkt => {
-                      Produkt.sprzedaj(produkt.id, produkt.ilosc);
+              if (Zadania.nowy(zadanie)) {
+                  zadanie.projekty.forEach(projekt => {
+                      Produkt.sprzedaj(projekt.id, projekt.ilosc);
                     });
 
                   koszyk = [];
@@ -93,24 +91,22 @@ class ObslugaZamowien {
           };
       };
 
-      this.dodajDoKoszyka = function dodajDoKoszyka(produkt) {
+      this.dodajDoKoszyka = function dodajDoKoszyka(projekt) {
           $mdDialog.show({
-              template: formularz,
-              locals: {produkt, koszyk: self.koszyk},
+              locals: {projekt, koszyk: self.koszyk},
               controller: dodawanie
           });
       };
 
       this.pokazKoszyk = () => {
           $mdDialog.show({
-              template: formularz2,
               locals: {koszyk: self.koszyk},
               controller: sprawdzKoszyk
           });
       };
   }
 }
-export const obslugazamowien = {
+export const obslugazadan = {
   template: tpl,
-  controller: ObslugaZamowien
+  controller: ObslugaZadan
 };

@@ -6,38 +6,38 @@ function routesConfig($stateProvider, $urlRouterProvider, $locationProvider) {
   $urlRouterProvider.otherwise('/');
 
   $stateProvider
-    .state('apteka', {
+    .state('organizer', {
       url: '/',
-      component: 'apteka',
-      redirectTo: 'apteka.start'
+      component: 'organizer',
+      redirectTo: 'organizer.start'
     })
-    .state('apteka.start', {
+    .state('organizer.start', {
         url: 'start',
         component: 'start',
         data: {pageTitle: 'Start'}
     })
-    .state('apteka.sprzedajacy', {
-      url: 'sprzedający',
-      component: 'obslugaSprzedajacy',
-      data: {pageTitle: 'Sprzedający'}
+    .state('organizer.uzytkownik', {
+      url: 'uzytkownik',
+      component: 'obslugaUzytkownika',
+      data: {pageTitle: 'Użytkownik'}
     })
-    .state('apteka.kupujacy', {
-      url: 'kupujący',
-      component: 'obslugaKupujacy',
-      data: {pageTitle: 'Kupujący'}
+    .state('organizer.klient', {
+      url: 'klient',
+      component: 'obslugaKlienta',
+      data: {pageTitle: 'Klient'}
     })
-    .state('apteka.produkt', {
-      url: 'produkt',
-      component: 'obslugaProduktow',
-      data: {pageTitle: 'Produkt'}
+    .state('organizer.projekt', {
+      url: 'projekt',
+      component: 'obslugaProjektu',
+      data: {pageTitle: 'Projekt'}
     })
-    .state('apteka.zamowienie', {
-      url: 'zamowienie',
-      component: 'obslugaZamowien',
-      data: {pageTitle: 'Zamówienie'}
-    }).state('apteka.sprzedaz', {
-      url: 'sprzedaz',
-      component: 'obslugaSprzedazy',
-      data: {pageTitle: 'Sprzedaż'}
+    .state('organizer.zadania', {
+      url: 'zadania',
+      component: 'obslugaZadan',
+      data: {pageTitle: 'Zadanie'}
+    }).state('organizer.notatki', {
+      url: 'notatki',
+      component: 'obslugaNotatek',
+      data: {pageTitle: 'Notatki'}
   });
 }

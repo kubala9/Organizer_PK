@@ -1,20 +1,19 @@
 import angular from 'angular';
 
-class Sprzedajacy {
+class Uzytkownik {
     constructor($localStorage) {
         "ngInject";
 
         this.lista = [];
-
         this.wczytaj = function wczytaj() {
-            if (angular.isDefined($localStorage.sprzedajacy)) {
-                this.lista = $localStorage.sprzedajacy;
+            if (angular.isDefined($localStorage.uzytkownik)) {
+                this.lista = $localStorage.uzytkownik;
             }
         };
 
         this.zapisz = function zapisz() {
             if (angular.isArray(this.lista)) {
-                $localStorage.sprzedajacy = this.lista;
+                $localStorage.uzytkownik = this.lista;
             }
         };
 
@@ -23,14 +22,14 @@ class Sprzedajacy {
 
 
 
-    nowy(sprzedawca) {
+    nowy(uzytkownik) {
         if (this.lista.length === 0) {
-            sprzedawca.id = 1;
+            uzytkownik.id = 1;
         } else {
-            sprzedawca.id = this.lista[this.lista.length - 1].id + 1;
+            uzytkownik.id = this.lista[this.lista.length - 1].id + 1;
         }
 
-        this.lista.push(sprzedawca);
+        this.lista.push(uzytkownik);
         this.zapisz();
 
         return true;
@@ -41,21 +40,21 @@ class Sprzedajacy {
         return this.lista;
     }
 
-    edytuj(sprzedawca) {
-        var i = this.lista.findIndex((element, index, array) => element.id === sprzedawca.id);
+    edytuj(uzytkownik) {
+        var i = this.lista.findIndex((element, index, array) => element.id === uzytkownik.id);
 
         if (i === -1) {
             return false;
         }
 
-        this.lista[i] = sprzedawca;
+        this.lista[i] = uzytkownik;
         this.zapisz();
 
         return true;
     }
 
-    usun(sprzedawca) {
-        var i = this.lista.indexOf(sprzedawca);
+    usun(uzytkownik) {
+        var i = this.lista.indexOf(uzytkownik);
         if (i === -1) {
             return false;
         }
@@ -66,11 +65,11 @@ class Sprzedajacy {
         return true;
     }
 
-    getSprzedawca(id) {
+    getUzytkownik(id) {
         var i = this.lista.filter(element => element.id === id)[0];
 
         return this.lista[i];
     }
 }
 
-export default Sprzedajacy;
+export default Uzytkownik;

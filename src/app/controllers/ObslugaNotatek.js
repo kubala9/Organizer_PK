@@ -1,77 +1,76 @@
 import angular from 'angular';
-import tpl from '../views/ObslugaSprzedaz.html';
-import formularz from '../views/_formularzSprzedaz.html';
+import tpl from '../views/ObslugaNotatek.html';
 
-class ObslugaSprzedazy {
+class ObslugaNotatek {
 
-    constructor($rootScope, $scope, $mdDialog, Sprzedaz, Kupujacy, Sprzedajacy, Produkt, Notyfikacje) {
+    constructor($rootScope, $scope, $mdDialog, Notatki, Klient, Uzytkownik, Projekt, Notyfikacje) {
         var ctrl = this;
-        this.sprzedaz = [];
+        this.notatka = [];
 
         var timeout = null;
         let wczytaj = () => {
-            this.sprzedaz = Sprzedaz.pobierz();
+            this.notatka = Notatki.pobierz();
             $scope.$applyAsync();
             timeout = setTimeout(wczytaj, 5000);
         };
         wczytaj();
 
-        this.kupujacy = Kupujacy.pobierz();
-        this.sprzedajacy = Sprzedajacy.pobierz();
-        this.produkty = Produkt.pobierz(true);
+        this.klient = Klient.pobierz();
+        this.uzytkownik = Uzytkownik.pobierz();
+        this.projekty = Projekt.pobierz(true);
 
         //dodawanie/edytowanie pracowników
-        let modyfikowanie = ($rootScope, $scope, sprzedaz, kupujacy, sprzedajacy, produkty) => {
-            if (angular.isDefined(sprzedaz) && sprzedaz.id) {
-                var copy = angular.copy(sprzedaz);
+        let modyfikowanie = ($rootScope, $scope, notatka, klient, uzytkownik, projekty) => {
+            if (angular.isDefined(notatka) && notatka.id) {
+                var copy = angular.copy(notatka);
 
-                copy.produkty = copy.produkty.map(produkt => {
+                copy.projekty = copy.projekty.map(projekt => {
                     return {
-                        ilosc: produkt.ilosc,
-                        object: Produkt.getProdukt(produkt.id)
+                        ilosc: projekt.ilosc,
+                        object: Projekt.getProjekt(projekt.id)
                     };
                 });
 
-                if (!copy.sprzedajacy) {
-                    copy.sprzedajacy = $rootScope.zalogowany.id;
+                if (!copy.uzytkownik) {
+                    copy.uzytkownik = $rootScope.zalogowany.id;
                 }
-                $scope.sprzedaz = copy;
+                $scope.notatka = copy;
             } else {
-                $scope.sprzedaz = Sprzedaz.getPusty();
-                $scope.sprzedaz.sprzedajacy = $rootScope.zalogowany.id;
+                $scope.notatka = Notatki.getPusty();
+                $scope.notatka.uzytkownik = $rootScope.zalogowany.id;
             }
 
-            $scope.dodajProdukt = () => {
-                $scope.sprzedaz.produkty.push({});
+            $scope.dodajProjekt = () => {
+                $scope.notatka.projekty.push({});
             };
-            $scope.usunProdukt = produkt => {
-                var i = $scope.sprzedaz.produkty.indexOf(produkt);
+            $scope.usunProjekt = projekt => {
+                var i = $scope.notatka.projekty.indexOf(projekt);
                 if (i === -1) {
                     return false;
                 }
-                $scope.sprzedaz.produkty.splice(i, 1);
+                $scope.notatka.projekty.splice(i, 1);
             };
 
-            $scope.sprzedajacy = sprzedajacy;
-            $scope.produkty = produkty;
-            $scope.kupujacy = kupujacy;
+            $scope.uzytkownik = uzytkownik;
+            $scope.projekty = projekty;
+            $scope.klient = klient;
 
             $scope.closeDialog = () => {
                 Notyfikacje.zamknij();
             };
 
-            $scope.getCena = (id, refundacja) => Produkt.getCena(id, refundacja);
+            $scope.getCena = (id, refundacja) => Projekt.getCena(id, refundacja);
 
-            $scope.$watch('sprzedaz.produkty', function() {
+            $scope.$watch('notatka.projekty', function() {
                 var sumaSzt = 0;
                 var sumaZl = 0;
 
-                $scope.sprzedaz.produkty.forEach(produkt => {
-                    if (produkt.ilosc && produkt.object) {
-                        sumaZl += parseFloat(produkt.ilosc * $scope.getCena(produkt.object.id, true), 10);
+                $scope.notatka.projekty.forEach(projekt => {
+                    if (projekt.ilosc && projekt.object) {
+                        sumaZl += parseFloat(projekt.ilosc * $scope.getCena(projekt.object.id, true), 10);
                     }
-                    if (produkt.ilosc) {
-                         sumaSzt += parseInt(produkt.ilosc, 10);
+                    if (projekt.ilosc) {
+                         sumaSzt += parseInt(projekt.ilosc, 10);
                     }
                 });
 
@@ -80,26 +79,26 @@ class ObslugaSprzedazy {
             }, true);
 
             $scope.save = () => {
-                sprzedaz = $scope.sprzedaz;
+                notatka = $scope.notatka;
 
-                sprzedaz.produkty = sprzedaz.produkty.map(item => {
+                notatka.projekty = notatka.projekty.map(item => {
                     return {
                         id: item.object.id,
                         ilosc: item.ilosc
                     };
                 });
 
-                if (sprzedaz.id) {
-                    if (Sprzedaz.edytuj(sprzedaz)) {
+                if (notatka.id) {
+                    if (Notatki.edytuj(notatka)) {
                         Notyfikacje.zamknij();
                         Notyfikacje.powiadomienie('Sprzedaż została zapisana!');
                     } else {
                         Notyfikacje.powiadomienie('Sprzedaż nie została zapisana!');
                     }
                 } else {
-                    if (Sprzedaz.nowy(sprzedaz)) {
-                        sprzedaz.produkty.forEach(produkt => {
-                            Produkt.sprzedaj(produkt.id, produkt.ilosc);
+                    if (Notatki.nowy(notatka)) {
+                        notatka.projekty.forEach(projekt => {
+                            Projekt.sprzedaj(projekt.id, projekt.ilosc);
                         });
 
                         Notyfikacje.zamknij();
@@ -110,19 +109,18 @@ class ObslugaSprzedazy {
                 }
             };
         };
-        this.modyfikacja = function modyfikacja(sprzedaz) {
+        this.modyfikacja = function modyfikacja(notatka) {
             $mdDialog.show({
-                template: formularz,
-                locals: {$rootScope, sprzedaz, kupujacy: ctrl.kupujacy, produkty: ctrl.produkty, sprzedajacy: ctrl.sprzedajacy},
+                locals: {$rootScope, notatka, klient: ctrl.klient, projekty: ctrl.projekty, uzytkownik: ctrl.uzytkownik},
                 controller: modyfikowanie
             });
         };
 
         //usuwanie pracowników
-        this.usun = function usun(sprzedaz) {
+        this.usun = function usun(notatka) {
             Notyfikacje.potwierdzenie('Czy chcesz usunąć sprzedaż?', 'Tak', 'Nie')
                 .then(function() {
-                    if (Sprzedaz.usun(sprzedaz)) {
+                    if (Notatki.usun(notatka)) {
                         Notyfikacje.zamknij();
                         Notyfikacje.powiadomienie('Sprzedaż została usunięta!');
                     } else {
@@ -138,7 +136,7 @@ class ObslugaSprzedazy {
         this.zrealizuj = id => {
             Notyfikacje.potwierdzenie('Czy zamówienie zostało zrealizowane?', 'Tak', 'Nie')
                 .then(function() {
-                    if (Sprzedaz.zrealizuj(id)) {
+                    if (Notatki.zrealizuj(id)) {
                         Notyfikacje.zamknij();
                         Notyfikacje.powiadomienie('Zamówienie zostało zrealizowane!');
                     } else {
@@ -152,7 +150,7 @@ class ObslugaSprzedazy {
         };
 
         this.getKlient = id => {
-            let klient = Kupujacy.getKlient(id);
+            let klient = Klient.getKlient(id);
             return klient.imie + ' ' + klient.nazwisko;
         };
 
@@ -170,7 +168,7 @@ class ObslugaSprzedazy {
     }
 }
 
-export const obslugasprzedazy = {
+export const obsluganotatek = {
     template: tpl,
-    controller: ObslugaSprzedazy
+    controller: ObslugaNotatek
 };

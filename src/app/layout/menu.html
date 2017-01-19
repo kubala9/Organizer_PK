@@ -1,9 +1,7 @@
 <md-nav-bar md-selected-nav-item="currentNavItem">
-  <md-nav-item ng-show="!user.kupujacy && !user.sprzedajacy" name="apteka.start" md-nav-sref="apteka.start">Start</md-nav-item>
-  <md-nav-item ng-show="user.sprzedajacy" name="apteka.sprzedajacy" md-nav-sref="apteka.sprzedajacy">Sprzedawcy</md-nav-item>
-  <md-nav-item ng-show="user.sprzedajacy" name="apteka.kupujacy" md-nav-sref="apteka.kupujacy">Klienci</md-nav-item>
-  <md-nav-item ng-show="user.sprzedajacy" name="apteka.produkt" md-nav-sref="apteka.produkt">Produkty</md-nav-item>
-  <md-nav-item ng-show="user.sprzedajacy" name="apteka.sprzedaz" md-nav-sref="apteka.sprzedaz">Sprzedaż</md-nav-item>
-
-  <md-nav-item ng-show="user.kupujacy" name="apteka.zamowienie" md-nav-sref="apteka.zamowienie">Sklep internetowy</md-nav-item>
+  <md-nav-item ng-show="!user.uzytkownik" name="organizer.start" md-nav-sref="organizer.start">Start</md-nav-item>
+  <md-nav-item ng-show="user.uzytkownik" name="organizer.uzytkownik" md-nav-sref="organizer.uzytkownik">Użytkownicy</md-nav-item>
+  <md-nav-item ng-show="user.uzytkownik" name="organizer.klient" md-nav-sref="organizer.klient">Klienci</md-nav-item>
+  <md-nav-item ng-show="user.uzytkownik" name="organizer.projekt" md-nav-sref="organizer.projekt">Projekty</md-nav-item>
+  <md-nav-item ng-show="user.uzytkownik" name="organizer.notatki" md-nav-sref="organizer.notatki">Notatki</md-nav-item>
 </md-nav-bar>

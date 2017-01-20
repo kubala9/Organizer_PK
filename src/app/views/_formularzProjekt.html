@@ -1,0 +1,71 @@
+<md-dialog>
+    <md-dialog-content>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 ng-show="!projekt.id">Dodaj nowy projekt</h2>
+                <h2 ng-show="projekt.id">Edytuj projekt</h2>
+            </div>
+        </md-toolbar>
+
+        <form name="modyfikacjaProjektu" id="modyfikacjaProjektu">
+            <md-content layout="column" layout-padding>
+                <div>
+                    <md-input-container>
+                        <label>Nazwa projektu</label>
+                        <input name="nazwa"  ng-model="projekt.nazwa" type="text" required />
+                        <div ng-messages="modyfikacjaProjektu.nazwa.$error" multiple md-auto-hide="true">
+                            <div ng-message="required">
+                                Wpisz nazwę projektu!
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div>
+                    <md-input-container>
+                        <label>Opis projektu</label>
+                        <textarea name="opis" ng-model="projekt.opis"></textarea>
+                        <div ng-messages="modyfikacjaProjektu.opis.$error" multiple md-auto-hide="true">
+                            <div ng-message="required">
+                                Wpisz opis projektu!
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div>
+                    <md-input-container>
+                        <label>Klient</label>
+                        <md-select ng-model="projekt.klient" required>
+                            <md-option ng-repeat="item in klienci" ng-value="item.id">
+                                {{ item.nazwa }}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <div flex-gt-xs>
+                    <h4>Data zakończenia projektu</h4>
+                    <md-datepicker ng-model="projekt.termin" md-placeholder="Wybierz datę" md-min-date="today"></md-datepicker>
+                </div>
+
+                <div>
+                    <md-input-container>
+                        <md-checkbox ng-model="projekt.archiwum" aria-label="Zrealizowane" ng-true-value="1" ng-false-value="0">
+                            Zrealizowany <small>(powoduje przeniesienie do archiwum)</small>
+                        </md-checkbox>
+                    </md-input-container>
+                </div>
+            </md-content>
+        </form>
+    </md-dialog-content>
+
+    <md-dialog-actions>
+        <md-button ng-click="closeDialog()" class="md-primary md-default-theme">
+            Zamknij
+        </md-button>
+        <md-button ng-click="save()" class="md-primary" ng-disabled="!modyfikacjaProjektu.$valid">
+            Zapisz
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

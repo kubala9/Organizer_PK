@@ -1,7 +1,8 @@
 import angular from 'angular';
 
 class App {
-  constructor($rootScope, Uzytkownik, Klient, Projekt, $localStorage, $state) {
+  constructor($rootScope, Uzytkownik, $localStorage, $state) {
+      //constructor($rootScope, Uzytkownik, Klient, Projekt, $localStorage, $state) {
     "ngInject";
 
 
@@ -12,12 +13,12 @@ class App {
       $state.go('organizer.projekt');
 
     if (!angular.isArray($localStorage.uzytkownik)) {
-      this.firstInitUzytkownik();
+      //this.firstInitUzytkownik();
     }
 
     if (!angular.isArray($localStorage.klient)) {
-      this.Klient = Klient;
-      this.firstInitKlient();
+    //  this.Klient = Klient;
+      //this.firstInitKlient();
     }
 
   }

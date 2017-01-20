@@ -1,46 +1,50 @@
 import angular from 'angular';
 
 class Projekt {
-    constructor($localStorage) {
+    constructor($localStorage, $rootScope) {
         "ngInject";
 
         this.listaprojektow = [];
 
-        this.wczytaj = function wczytaj() {
+        this.wczytaj = () => {
             if (angular.isDefined($localStorage.projekt)) {
-                this.listaprojektow = $localStorage.projekt;
+                this.listaprojektow = $localStorage.projekt.filter(item => item.id_user === $rootScope.zalogowany.id);
             }
         };
 
-        this.zapisz = function zapisz() {
+        this.zapisz = () => {
             if (angular.isArray(this.listaprojektow)) {
                 $localStorage.projekt = this.listaprojektow;
             }
         };
 
         this.wczytaj();
+
+        this.nowy = projekt => {
+            if (this.listaprojektow.length === 0) {
+                projekt.id = 1;
+            } else {
+                projekt.id = this.listaprojektow[this.listaprojektow.length - 1].id + 1;
+            }
+
+            projekt.id_user = $rootScope.zalogowany.id;
+
+            this.listaprojektow.push(projekt);
+            this.zapisz();
+
+            return true;
+        };
     }
 
-    nowy(projekt) {
-        if (this.listaprojektow.length === 0) {
-            projekt.id = 1;
-        } else {
-            projekt.id = this.listaprojektow[this.listaprojektow.length - 1].id + 1;
-        }
-
-        this.listaprojektow.push(projekt);
-        this.zapisz();
-
-        return true;
-    }
-
-    pobierz(dostepne) {
+    pobierz(archiwum) {
         this.wczytaj();
 
-        if (angular.isDefined(dostepne)) {
-            return this.listaprojektow.filter(projekt => projekt.stan !== 0);
+        if (archiwum === 1) {
+            return this.listaprojektow.filter(projekt => projekt.archiwum === 1);
+        } else {
+            return this.listaprojektow.filter(projekt => projekt.archiwum !== 1);
         }
-        return this.listaprojektow;
+
     }
 
     edytuj(projekt) {

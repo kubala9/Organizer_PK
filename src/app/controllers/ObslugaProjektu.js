@@ -1,36 +1,40 @@
 import tpl from '../views/ObslugaProjektu.html';
+import form from '../views/_formularzProjekt.html';
 
 class ObslugaProjektu {
 
-  constructor($scope, $mdDialog, Projekt, Notyfikacje) {
+  constructor($rootScope, $scope, $mdDialog, Projekt, Notyfikacje, Klient) {
     "ngInject";
-
+    var self = this;
     this.projekty = [];
+    this.klienci = Klient.pobierz();
+    this.archiwum = 0;
+
     var timeout = null;
 
     let wczytaj = () => {
-      this.projekty = [{nazwa: '123'}, {nazwa: '321'}];
-      //Projekt.pobierz();
+      self.projekty = Projekt.pobierz(this.archiwum);
       $scope.$applyAsync();
       timeout = setTimeout(wczytaj, 5000);
     };
     wczytaj();
 
-
     //dodawanie/edytowanie produków
-    let modyfikowanie = ($scope, $mdDialog, projekt) => {
+    let modyfikowanie = ($scope, $mdDialog, projekt, klienci) => {
+      $scope.klienci = klienci;
+      $scope.today = new Date();
+
       if (typeof projekt !== "undefined") {
         $scope.projekt = Object.assign({}, projekt);
       } else {
         $scope.projekt = {
-                nazwa: '',
-                opis: '', 
-                cena: '', 
-                stan: 0,
-                recepta: 0,
-                refundacja: 0
-            };
-        }
+          nazwa: '',
+          opis: null,
+          klient: null,
+          archiwum: 0,
+          termin: null
+        };
+      }
 
       $scope.closeDialog = () => {
         Notyfikacje.zamknij();
@@ -58,15 +62,29 @@ class ObslugaProjektu {
         }
       };
     };
-    this.modyfikacja = function modyfikacja(projekt) {
+
+    this.aktywnyProjekt = 3;
+
+    this.pokazArchiwum = () => {
+      self.archiwum = 1;
+      wczytaj();
+    };
+
+    this.schowajArchiwum = () => {
+      self.archiwum = 0;
+      wczytaj();
+    };
+
+    this.modyfikacja = projekt => {
       $mdDialog.show({
-        locals: {projekt}, //strzykujemy aktualnie dodawany/edytowany projekt
+        template: form,
+        locals: {projekt, klienci: self.klienci},
         controller: modyfikowanie
       });
     };
 
     //usuwanie projektow
-    this.usun = function usun(projekt) {
+    this.usun = projekt => {
       Notyfikacje.potwierdzenie('Czy chcesz usunąć ten projekt?', 'Tak', 'Nie')
           .then(function() {
             if (Projekt.usun(projekt)) {
@@ -80,6 +98,10 @@ class ObslugaProjektu {
             Notyfikacje.zamknij();
             Notyfikacje.powiadomienie('Projekt nie został usunięty!');
           });
+    };
+
+    this.ustawProjekt = projekt => {
+      console.log(projekt);
     };
 
     this.$onDestroy = function() {

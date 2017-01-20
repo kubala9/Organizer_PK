@@ -19,14 +19,35 @@
                 md-whiteframe="4">
 
             <md-toolbar class="md-theme-indigo">
-                <h3 class="md-toolbar-tools">Projekty</h3>
-            </md-toolbar>
-            <md-content layout-padding>
-                <md-list>
-                    <md-list-item ng-repeat="item in $ctrl.projekty" ng-click="$ctrl.klik(item);">
-                        <h3>{{ item.nazwa }}</h3>
+                <div class="md-toolbar-tools">
+                    <h3 ng-show="$ctrl.archiwum == 0">Projekty</h3>
+                    <h3 ng-show="$ctrl.archiwum == 1">Archiwum projektów</h3>
 
-                        <md-button class="md-secondary md-icon-button" ng-click="$ctrl.usun(item)">
+                    <span flex></span>
+
+                    <md-button ng-click="$ctrl.pokazArchiwum();" class="small" ng-show="$ctrl.archiwum == 0">
+                        Archiwum projektów
+                    </md-button>
+                    <md-button ng-click="$ctrl.schowajArchiwum();" class="small" ng-show="$ctrl.archiwum == 1">
+                        Projekty
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-content layout-padding>
+                <p class="text-center" ng-show="$ctrl.projekty.length == 0">Brak projektów<span ng-show="$ctrl.archiwum"> w archiwum</span>!</p>
+
+                <md-list>
+                    <md-list-item ng-repeat="projekt in $ctrl.projekty" ng-click="$ctrl.modyfikacja(projekt);" ng-mouseover="termin = 1;" ng-mouseleave="termin = 0;" ng-class="{'active': projekt.id == $ctrl.aktywnyProjekt}">
+                        <md-tooltip md-visible="termin === 1" md-direction="top">
+                            Termin projektu: {{ projekt.termin | date: 'd.MM.yyyy' }}
+                        </md-tooltip>
+
+                        <h3>{{projekt.id}}{{ projekt.nazwa }}</h3>
+
+                        <md-button class="md-secondary md-icon-button" ng-click="$ctrl.usun(projekt)">
+
+
                             <ng-md-icon icon="delete" style="fill: grey;" size="30"></ng-md-icon>
                         </md-button>
                     </md-list-item>
@@ -34,7 +55,7 @@
 
 
                 <div id="sidebar-button">
-                    <md-button ng-click="close()" class="md-primary">
+                    <md-button ng-click="$ctrl.modyfikacja()" class="md-primary" ng-show="$ctrl.archiwum == 0">
                         Dodaj nowy projekt
                     </md-button>
                 </div>

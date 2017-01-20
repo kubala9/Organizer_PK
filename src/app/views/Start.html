@@ -1,16 +1,16 @@
-<div layout="row">
+<div layout="row" id="start">
     <div flex>
-        <h2 class="text-center">Zaloguj się</h2>
+        <h2>Zaloguj się</h2>
 
         <form name="loginUzytkownik">
             <div>
                 <md-input-container>
                     <label>Login</label>
-                    <input name="Login" ng-model="logujUzytkownik.login" type="text"  />
+                    <input name="login" ng-model="logujUzytkownik.login" type="text" required />
 
                     <div ng-messages="loginUzytkownik.login.$error">
-                        <div ng-message-exp="['required', 'pattern']">
-                           Brak użytkownika o takim loginie!
+                        <div ng-message="required">
+                           Wpisz login!
                         </div>
                     </div>
                 </md-input-container>
@@ -36,76 +36,53 @@
     </div>
 
     <div flex>
-        <h2 class="text-center">Zarejestruj się </h2>
+        <h2>Zarejestruj się </h2>
 
         <form name="signupUzytkownik">
                 <div>
                     <md-input-container>
-                        <label>Imię</label>
-                        <input name="imie"  ng-model="rejestrujUzytkownik.imie" type="text" required />
-                        <div ng-messages="signupUzytkownik.imie.$error" multiple md-auto-hide="true">
+                        <label>Login</label>
+                        <input name="login"  ng-model="rejestrujUzytkownik.login" type="text" required />
+                        <div ng-messages="signupUzytkownik.login.$error" multiple md-auto-hide="true">
                             <div ng-message="required">
-                                Wpisz poprawnie imię!
+                                Wpisz poprawny login!
                             </div>
                         </div>
                     </md-input-container>
 
                     <md-input-container>
-                        <label>Nazwisko</label>
-                        <input name="nazwisko"  ng-model="rejestrujUzytkownik.nazwisko" type="text" required />
+                        <label>Imię i nazwisko</label>
+                        <input name="name"  ng-model="rejestrujUzytkownik.name" type="text" required />
 
-                        <div ng-messages="signupUzytkownik.nazwisko.$error" multiple md-auto-hide="true">
+                        <div ng-messages="signupUzytkownik.name.$error" multiple md-auto-hide="true">
                             <div ng-message="required">
-                                Wpisz poprawnie nazwisko!
+                                Wpisz poprawnie imię i nazwisko!
                             </div>
                         </div>
                     </md-input-container>
                 </div>
                 <div>
-                    <md-input-container>
-                        <label>PESEL</label>
-                        <input name="pesel"  ng-model="rejestrujUzytkownik.pesel" type="text" required pattern="[0-9]{11}" />
-                        <div ng-messages="signupUzytkownik.pesel.$error">
-                            <div ng-message-exp="['required', 'pattern']">
-                                Wpisz prawidłowy PESEL!
-                            </div>
-                        </div>
-                    </md-input-container>
-
                     <md-input-container>
                         <label>Email</label>
                         <input name="email"  ng-model="rejestrujUzytkownik.email" type="text" required pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
                         <div ng-messages="signupUzytkownik.email.$error">
                             <div ng-message-exp="['required', 'pattern']">
-                                Wpisz email klienta!
-                            </div>
-                        </div>
-                    </md-input-container>
-                </div>
-                <div>
-                    <md-input-container>
-                        <label>Nr telefonu</label>
-                        <input name="telefon"  ng-model="rejestrujUzytkownik.telefon" type="text" required />
-
-                        <div ng-messages="signupUzytkownik.telefon.$error" multiple md-auto-hide="true">
-                            <div ng-message="required">
-                                Wpisz poprawny numer telefonu!
+                                Wpisz swój email!
                             </div>
                         </div>
                     </md-input-container>
 
                     <md-input-container>
-                        <label>Dane</label>
-                        <input name="adres"  ng-model="rejestrujUzytkownik.adres" type="text" required />
-                        <div ng-messages="signupUzytkownik.adres.$error" multiple md-auto-hide="true">
-                            <div ng-message="required">
-                                Wpisz dane!
+                        <label>Hasło</label>
+                        <input name="haslo" ng-model="rejestrujUzytkownik.haslo" type="password" required minlength="6" />
+
+                        <div ng-messages="signupUzytkownik.haslo.$error" multiple md-auto-hide="true">
+                            <div ng-message-exp="['required', 'minlength']">
+                                Wpisz przynajmniej 6 znaków!
                             </div>
                         </div>
                     </md-input-container>
                 </div>
-
-               
 
             <md-button ng-click="$ctrl.rejestrujJakoUzytkownik()" class="md-primary md-raised" ng-disabled="!signupUzytkownik.$valid">
                 Zarejestuj się

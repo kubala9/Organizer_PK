@@ -2,8 +2,8 @@
     <md-dialog-content>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2 ng-show="!kupujacy.id">Dodaj klienta</h2>
-                <h2 ng-show="kupujacy.id">Edytuj klienta</h2>
+                <h2 ng-show="!klient.id">Dodaj klienta</h2>
+                <h2 ng-show="klient.id">Edytuj klienta</h2>
             </div>
         </md-toolbar>
 
@@ -11,9 +11,9 @@
             <md-content layout-gt-sm="column" layout-padding>
                 <div>
                     <md-input-container>
-                        <label>Imię</label>
-                        <input name="imie"  ng-model="kupujacy.imie" type="text" required />
-                        <div ng-messages="modyfikacjaKupujacy.imie.$error" multiple md-auto-hide="true">
+                        <label>Nazwa klienta</label>
+                        <input name="nazwa"  ng-model="klient.nazwa" type="text" required />
+                        <div ng-messages="modyfikacjaKupujacy.nazwa.$error" multiple md-auto-hide="true">
                             <div ng-message="required">
                                 Wpisz imię klienta!
                             </div>
@@ -21,39 +21,19 @@
                     </md-input-container>
 
                     <md-input-container>
-                        <label>Nazwisko</label>
-                        <input name="nazwisko"  ng-model="kupujacy.nazwisko" type="text" required />
-
-                        <div ng-messages="modyfikacjaKupujacy.nazwisko.$error" multiple md-auto-hide="true">
-                            <div ng-message="required">
-                                Wpisz nazwisko klienta!
-                            </div>
-                        </div>
-                    </md-input-container>
-
-                    <md-input-container>
-                        <label>PESEL</label>
-                        <input name="pesel"  ng-model="kupujacy.pesel" type="text" required pattern="[0-9]{11}" />
-                        <div ng-messages="modyfikacjaKupujacy.pesel.$error">
-                            <div ng-message-exp="['required', 'pattern']">
-                                Wpisz prawidłowy PESEL!
-                            </div>
-                        </div>
-                    </md-input-container>
-
-                    <md-input-container>
                         <label>Email</label>
-                        <input name="email"  ng-model="kupujacy.email" type="text" required pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
+                        <input name="email"  ng-model="klient.email" type="text" required pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
                         <div ng-messages="modyfikacjaKupujacy.email.$error">
                             <div ng-message-exp="['required', 'pattern']">
                                 Wpisz email klienta!
                             </div>
                         </div>
                     </md-input-container>
-
+                </div>
+                <div>
                     <md-input-container>
                         <label>Nr telefonu</label>
-                        <input name="telefon"  ng-model="kupujacy.telefon" type="text" required />
+                        <input name="telefon"  ng-model="klient.telefon" type="text" required />
 
                         <div ng-messages="modyfikacjaKupujacy.telefon.$error" multiple md-auto-hide="true">
                             <div ng-message="required">
@@ -65,22 +45,18 @@
                     
                     <md-input-container>
                         <label>Adres</label>
-                        <input name="adres"  ng-model="kupujacy.adres" type="text" required />
+                        <input name="adres"  ng-model="klient.adres" type="text" required />
                         <div ng-messages="modyfikacjaKupujacy.adres.$error" multiple md-auto-hide="true">
                             <div ng-message="required">
                                 Wpisz adres klienta!
                             </div>
                         </div>
                     </md-input-container>
-
+                </div>
+                <div>
                     <md-input-container>
-                        <label>Hasło</label>
-                        <input name="haslo"  ng-model="kupujacy.haslo" type="password" required minlength="6" />
-                        <div ng-messages="modyfikacjaKupujacy.haslo.$error" multiple md-auto-hide="true">
-                            <div ng-message-exp="['required', 'minlength']">
-                                Wpisz przynajmniej 6 znaków!
-                            </div>
-                        </div>
+                        <label>Notatka</label>
+                        <textarea name="notatka" ng-model="klient.notatka"></textarea>
                     </md-input-container>
                 </div>
             </md-content>

@@ -16,23 +16,22 @@ class Start {
       var haslo = $scope.logujUzytkownik.haslo;
 
       var user = this.uzytkownik.filter(item => item.login === login && item.haslo === haslo);
-      $rootScope.zalogowany = user[0];
-      $rootScope.zalogowany.uzytkownik = 1;
 
-      Notyfikacje.powiadomienie('Zalogowałeś się.');
+      if (user.length === 1) {
+        $rootScope.zalogowany = user[0];
+        $rootScope.zalogowany.uzytkownik = 1;
 
-      $state.go('organizer.uzytkownik');
+        Notyfikacje.powiadomienie('Zalogowałeś się.');
+
+        $state.go('organizer.uzytkownik');
+      } else {
+        Notyfikacje.powiadomienie('Błąd logowania.');
+      }
     };
 
-   
-
-
     var rejestrujUzytkownik = {
-      imie: '',
-      nazwisko: '',
-      dane: '',
+      name: '',
       email: '',
-      telefon: '',
       login: '',
       haslo: ''
     };
@@ -49,7 +48,7 @@ class Start {
           $scope.logujUzytkownik.login = $scope.rejestrujUzytkownik.login;
           $scope.rejestrujUzytkownik = rejestrujUzytkownik;
           $scope.signupUzytkownik.$setPristine();
-          $scope.signupUzytkownik.setUntouched();
+          $scope.signupUzytkownik.$setUntouched();
 
           Notyfikacje.powiadomienie('Zostałeś zarejestrowany, możesz się zalogować');
         }

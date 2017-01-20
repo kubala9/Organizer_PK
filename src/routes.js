@@ -3,13 +3,16 @@ export default routesConfig;
 /** @ngInject */
 function routesConfig($stateProvider, $urlRouterProvider, $locationProvider) {
   $locationProvider.html5Mode(true).hashPrefix('!');
-  $urlRouterProvider.otherwise('/');
+  $urlRouterProvider.otherwise('organizer/start');
 
   $stateProvider
     .state('organizer', {
       url: '/',
       component: 'organizer',
-      redirectTo: 'organizer.start'
+      redirectTo: 'organizer.start',
+      resolve: () => {
+        alert('lol');
+      }
     })
     .state('organizer.start', {
         url: 'start',
@@ -22,12 +25,12 @@ function routesConfig($stateProvider, $urlRouterProvider, $locationProvider) {
       data: {pageTitle: 'Użytkownik'}
     })
     .state('organizer.klient', {
-      url: 'klient',
+      url: 'klienci',
       component: 'obslugaKlienta',
       data: {pageTitle: 'Klient'}
     })
     .state('organizer.projekt', {
-      url: 'projekt',
+      url: 'projekty',
       component: 'obslugaProjektu',
       data: {pageTitle: 'Projekt'}
     })

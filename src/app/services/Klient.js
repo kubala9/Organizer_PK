@@ -1,14 +1,15 @@
 import angular from 'angular';
 
 class Klient {
-    constructor($localStorage) {
+    constructor($localStorage, $rootScope) {
         "ngInject";
 
         this.listaklientow = [];
 
         this.wczytaj = function wczytaj() {
-            if (angular.isDefined($localStorage.klient)) {
-                this.listaklientow = $localStorage.klient;
+            if (angular.isDefined($localStorage.klient) && $rootScope.zalogowany) {
+                var id = $rootScope.zalogowany.id;
+                this.listaklientow = $localStorage.klient.filter(el => el.id_user === id);
             }
         };
 
@@ -24,6 +25,7 @@ class Klient {
             } else {
                 klient.id = 1;
             }
+            klient.id_user = $rootScope.zalogowany.id;
 
             this.listaklientow.push(klient);
 
@@ -60,15 +62,6 @@ class Klient {
     pobierz() {
         this.wczytaj();
         return this.listaklientow;
-    }
-
-    getKlient(id) {
-        var i = this.listaklientow.findIndex((element, index, array) => element.id === id);
-        if (i === -1) {
-            return false;
-        }
-
-        return this.listaklientow[i];
     }
 
 }

@@ -1,6 +1,6 @@
 import tpl from '../views/ObslugaProjektu.html';
 
-class ObslugaProjektow {
+class ObslugaProjektu {
 
   constructor($scope, $mdDialog, Projekt, Notyfikacje) {
     "ngInject";
@@ -9,7 +9,8 @@ class ObslugaProjektow {
     var timeout = null;
 
     let wczytaj = () => {
-      this.projekty = Projekt.pobierz();
+      this.projekty = [{nazwa: '123'}, {nazwa: '321'}];
+      //Projekt.pobierz();
       $scope.$applyAsync();
       timeout = setTimeout(wczytaj, 5000);
     };
@@ -88,7 +89,7 @@ class ObslugaProjektow {
   }
 }
 
-export const obslugaprojektow = {
+export const obslugaprojektu = {
   template: tpl,
-  controller: ObslugaProjektow
+  controller: ObslugaProjektu
 };

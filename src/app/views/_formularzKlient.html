@@ -1,0 +1,74 @@
+<md-dialog>
+    <md-dialog-content>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 ng-show="!klient.id">Dodaj klienta</h2>
+                <h2 ng-show="klient.id">Edytuj klienta</h2>
+            </div>
+        </md-toolbar>
+
+        <form name="modyfikacjaKlient">
+            <md-content layout-gt-sm="column" layout-padding>
+                <div>
+                    <md-input-container>
+                        <label>Nazwa klienta</label>
+                        <input name="nazwa"  ng-model="klient.nazwa" type="text" required />
+                        <div ng-messages="modyfikacjaKlient.nazwa.$error" multiple md-auto-hide="true">
+                            <div ng-message="required">
+                                Wpisz imię klienta!
+                            </div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label>Email</label>
+                        <input name="email"  ng-model="klient.email" type="text" required pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
+                        <div ng-messages="modyfikacjaKlient.email.$error">
+                            <div ng-message-exp="['required', 'pattern']">
+                                Wpisz email klienta!
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-input-container>
+                        <label>Nr telefonu</label>
+                        <input name="telefon"  ng-model="klient.telefon" type="text" required />
+
+                        <div ng-messages="modyfikacjaKlient.telefon.$error" multiple md-auto-hide="true">
+                            <div ng-message="required">
+                                Wpisz nr telefonu klienta!
+                            </div>
+                        </div>
+                    </md-input-container>
+
+                    
+                    <md-input-container>
+                        <label>Adres</label>
+                        <input name="adres"  ng-model="klient.adres" type="text" required />
+                        <div ng-messages="modyfikacjaKlient.adres.$error" multiple md-auto-hide="true">
+                            <div ng-message="required">
+                                Wpisz adres klienta!
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-input-container>
+                        <label>Notatka</label>
+                        <textarea name="notatka" ng-model="klient.notatka"></textarea>
+                    </md-input-container>
+                </div>
+            </md-content>
+        </form>
+    </md-dialog-content>
+
+    <md-dialog-actions>
+        <md-button ng-click="closeDialog()" class="md-primary md-default-theme">
+            Zamknij
+        </md-button>
+        <md-button ng-click="save()" class="md-primary" ng-disabled="!modyfikacjaKlient.$valid">
+            Zapisz
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

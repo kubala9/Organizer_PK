@@ -2,14 +2,17 @@ export default routesConfig;
 
 /** @ngInject */
 function routesConfig($stateProvider, $urlRouterProvider, $locationProvider) {
-  $locationProvider.html5Mode(true).hashPrefix('!');
-  $urlRouterProvider.otherwise('/');
+  $locationProvider.html5Mode(true).hashPrefix('#');
+  $urlRouterProvider.otherwise('organizer/start');
 
   $stateProvider
     .state('organizer', {
       url: '/',
       component: 'organizer',
-      redirectTo: 'organizer.start'
+      redirectTo: 'organizer.start',
+      resolve: () => {
+        alert('lol');
+      }
     })
     .state('organizer.start', {
         url: 'start',
@@ -22,20 +25,16 @@ function routesConfig($stateProvider, $urlRouterProvider, $locationProvider) {
       data: {pageTitle: 'Użytkownik'}
     })
     .state('organizer.klient', {
-      url: 'klient',
+      url: 'klienci',
       component: 'obslugaKlienta',
       data: {pageTitle: 'Klient'}
     })
     .state('organizer.projekt', {
-      url: 'projekt',
-      component: 'obslugaProjektu',
+      url: 'projekty',
+      component: 'obslugaProjektow',
       data: {pageTitle: 'Projekt'}
     })
-    .state('organizer.zadania', {
-      url: 'zadania',
-      component: 'obslugaZadan',
-      data: {pageTitle: 'Zadanie'}
-    }).state('organizer.notatki', {
+    .state('organizer.notatki', {
       url: 'notatki',
       component: 'obslugaNotatek',
       data: {pageTitle: 'Notatki'}

@@ -1,0 +1,54 @@
+<md-dialog>
+    <md-dialog-content>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 ng-show="!notatki.id">Dodaj notatkę</h2>
+                <h2 ng-show="notatki.id">{{notatki.tytul}}</h2>
+            </div>
+        </md-toolbar>
+
+        <form name="modyfikacjaNotatki" id="modyfikacjaNotatki">
+            <md-content layout="column" layout-padding>
+                <div>
+                    <md-input-container>
+                        <label>Tytuł</label>
+                        <input name="tytul"  ng-model="notatki.tytul" type="text" required />
+                        <div ng-messages="modyfikacjaNotatki.tytul.$error" multiple md-auto-hide="true">
+                            <div ng-message="required">
+                                Wpisz tytuł notatki!
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div>
+                    <md-input-container>        
+                        <label>Treść</label>
+                        <textarea name="tresc" ng-model="notatki.tresc" required></textarea>
+                        <div ng-messages="modyfikacjaNotatki.tresc.$error" multiple md-auto-hide="true">
+                            <div ng-message="required">
+                                Wpisz treść notatki!
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div>
+                 <md-input-container>
+                       {{ notatki }}
+                        
+                    </md-input-container>
+                </div>
+            </md-content>
+        </form>
+    </md-dialog-content>
+
+    <md-dialog-actions>
+        <md-button ng-click="closeDialog()" class="md-primary md-default-theme">
+            Zamknij
+        </md-button>
+        <md-button ng-click="save()" class="md-primary" ng-disabled="!modyfikacjaNotatki.$valid">
+            Zapisz
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

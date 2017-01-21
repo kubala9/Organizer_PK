@@ -1,0 +1,31 @@
+<md-dialog>
+    <md-dialog-content>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Dodaj pracownika</h2>
+            </div>
+        </md-toolbar>
+
+        <form name="modyfikacjaPracownik">
+            <md-content layout-gt-sm="column" layout-padding>
+             <md-input-container>
+                        <label>Pracownik</label>
+                        <md-select ng-model="uzytkownik.id_manager" required>
+                            <md-option ng-repeat="uzytkownik in uzytkownicy" ng-value="{{uzytkownik.id}}">
+                               {{ uzytkownik.imie }} {{ uzytkownik.nazwisko }}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+            </md-content>
+        </form>
+    </md-dialog-content>
+
+    <md-dialog-actions>
+        <md-button ng-click="closeDialog()" class="md-primary md-default-theme">
+            Zamknij
+        </md-button>
+        <md-button ng-click="save()" class="md-primary" ng-disabled="!modyfikacjaPracownik.$valid">
+            Zapisz
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

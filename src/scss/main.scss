@@ -39,3 +39,24 @@ footer {
 .toRight {float: right;}
 
 #sprzedaz .md-errors-spacer {display: none;}
+
+h2 {
+  padding: 8px;
+  color: grey;
+  font-weight: 600;
+}
+#start h2 {
+  padding: 8px 0;
+  margin-bottom: 15px;
+}
+md-dialog md-dialog-content md-toolbar h2 {color: #FFF;}
+
+#sidebar-button {text-align: center;}
+
+#modyfikacjaProjektu {width: 400px;}
+
+.small {font-size: 12px;}
+
+md-tooltip {font-size: 12px;}
+
+.active {background: rgba(0, 0, 0, 0.1);}

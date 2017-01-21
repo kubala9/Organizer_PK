@@ -1,35 +1,57 @@
-<h2>
-    <span>Baza produktów</span>
-</h2>
-<md-content>
-    <div class="withButton">
-        <label>Wyszukaj produkt: <input ng-model="searchText" placeholder="Wpisz nazwę produktu..."></label>
+<md-sidenav
+        class="md-sidenav-right"
+        md-component-id="right"
+        md-is-locked-open="1"
+        md-whiteframe="4">
 
-        <md-button class="md-raised md-primary toRight" ng-click="$ctrl.modyfikacja()">
-            Dodaj nowy produkt
-        </md-button>
-    </div>
-    <hr>
+    <md-toolbar class="md-theme-indigo">
+        <div class="md-toolbar-tools">
+            <h3 ng-show="$ctrl.archiwum == 0">Projekty</h3>
+            <h3 ng-show="$ctrl.archiwum == 1">Archiwum projektów</h3>
 
-    <md-list>
-        <md-list-item class="md-3-line" ng-repeat="produkt in $ctrl.produkty | filter:searchText | orderBy: produkt.id : true" ng-click="$ctrl.modyfikacja(produkt)">
-            <div class="md-list-item-text">
-                <h3>{{produkt.nazwa }} </h3>
-                <h4>{{produkt.opis}}</h4>
- 
-                <div class="md-secondary">Stan: {{produkt.stan}} szt.</div>
-            </div>
-            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.modyfikacja(produkt)">
-                <ng-md-icon  icon="mode_edit" style="fill: grey;" size="30"></ng-md-icon>
+            <span flex></span>
+
+            <md-button ng-click="$ctrl.pokazArchiwum();" class="small" ng-show="$ctrl.archiwum == 0">
+                Archiwum projektów
             </md-button>
-
-            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.usun(produkt)">
-                <ng-md-icon icon="delete" style="fill: grey;" size="30"></ng-md-icon>
+            <md-button ng-click="$ctrl.schowajArchiwum();" class="small" ng-show="$ctrl.archiwum == 1">
+                Projekty
             </md-button>
-        </md-list-item>
-    </md-list>
+        </div>
+    </md-toolbar>
 
-    <md-button class="md-raised md-primary" ng-click="$ctrl.modyfikacja()">
-        Dodaj nowy produkt
-    </md-button>
-</md-content>
+    <md-content layout-padding>
+        <p class="text-center" ng-show="$ctrl.projekty.length == 0">Brak projektów<span ng-show="$ctrl.archiwum"> w archiwum</span>!</p>
+
+        <md-list>
+            <md-list-item ng-repeat="projekt in $ctrl.projekty | orderBy: '-termin'" ng-mouseover="termin = 1;" ng-mouseleave="termin = 0;">
+
+                <ng-md-icon ng-show="projekt.id == $ctrl.aktywnyProjekt" icon="check_box" style="fill: grey;" size="30"></ng-md-icon>
+
+                <ng-md-icon ng-click="$ctrl.ustawProjekt(projekt)" ng-hide="projekt.id == $ctrl.aktywnyProjekt" icon="check_box_outline_blank" style="fill: grey;" size="30"></ng-md-icon>
+
+                <md-tooltip md-visible="termin === 1" md-direction="top">
+                    Termin projektu: {{ projekt.termin | date: 'd.MM.yyyy' }}
+                </md-tooltip>
+
+                <h3>{{ projekt.nazwa }}</h3>
+
+                <md-button class="md-secondary md-icon-button" ng-click="$ctrl.modyfikacja(projekt)">
+                    <ng-md-icon icon="mode_edit" style="fill: grey;" size="30"></ng-md-icon>
+                </md-button>
+
+                <md-button class="md-secondary md-icon-button" ng-click="$ctrl.usun(projekt)">
+                    <ng-md-icon icon="delete" style="fill: grey;" size="30"></ng-md-icon>
+                </md-button>
+            </md-list-item>
+        </md-list>
+
+
+        <div class="text-center">
+            <md-button ng-click="$ctrl.modyfikacja()" class="md-primary" ng-show="$ctrl.archiwum == 0">
+                Dodaj nowy projekt
+            </md-button>
+        </div>
+    </md-content>
+
+</md-sidenav>

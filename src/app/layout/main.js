@@ -1,20 +1,24 @@
 import angular from 'angular';
 
 class App {
-  constructor($rootScope, Uzytkownik, Klient, Projekt, $localStorage) {
+  constructor($rootScope, Uzytkownik, $localStorage, $state) {
+      //constructor($rootScope, Uzytkownik, Klient, Projekt, $localStorage, $state) {
     "ngInject";
 
-    this.Uzytkownik = Uzytkownik;
-    if (!angular.isArray($localStorage.uzytkownik)) {
-      this.firstInitUzytkownik();
+
+    this.uzytkownik = Uzytkownik.pobierz();
 
       $rootScope.zalogowany = this.uzytkownik[0];
       $rootScope.zalogowany.uzytkownik = 1;
+      $state.go('organizer.projekt');
+
+    if (!angular.isArray($localStorage.uzytkownik)) {
+     // this.firstInitUzytkownik();
     }
 
     if (!angular.isArray($localStorage.klient)) {
-      this.Klient = Klient;
-      this.firstInitKlient();
+     // this.Klient = Klient;
+     // this.firstInitKlient();
     }
 
   }
@@ -57,6 +61,7 @@ class App {
 
   firstInitKlient() {
     let klient1 = {
+        id_user: 1,
         nazwa: 'Jan Kowalski',
         email: 'janek@poczta.pl',
         telefon: '791999468',
@@ -64,6 +69,7 @@ class App {
     };
 
     let klient2 = {
+        id_user: 1,
         nazwa: 'WebAnkieta',
         email: 'admin@ankieta.pl',
         telefon: '781222333',
@@ -71,6 +77,7 @@ class App {
     };
 
     let klient3 = {
+        id_user: 1,
         nazwa: 'Polsat',
         email: 'admin@polsat.pl',
         telefon: '666211322',
@@ -80,7 +87,7 @@ class App {
     this.Klient.nowy(klient2);
     this.Klient.nowy(klient3);
   }
-
+ 
 }
 
 export const main = {

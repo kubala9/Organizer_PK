@@ -1,46 +1,69 @@
 import angular from 'angular';
 
 class Projekt {
-    constructor($localStorage) {
+    constructor($localStorage, $rootScope) {
         "ngInject";
 
-        this.listaprojektow = [];
+        this.listaprojektow = [{
+          nazwa: 'prodzekt',
+          opis: 'trzeba zdazyc',
+          klient: 1,
+          archiwum: 0,
+          termin: null
+        },
+                              {
+          nazwa: 'progsdkt',
+          opis: 'tsddazyc',
+          klient: 1,
+          archiwum: 0,
+          termin: null
+        }];
 
-        this.wczytaj = function wczytaj() {
+        this.wczytaj = () => {
             if (angular.isDefined($localStorage.projekt)) {
-                this.listaprojektow = $localStorage.projekt;
+                this.listaprojektow = $localStorage.projekt.filter(item => item.id_user === $rootScope.zalogowany.id);
             }
         };
 
-        this.zapisz = function zapisz() {
+        this.zapisz = () => {
             if (angular.isArray(this.listaprojektow)) {
                 $localStorage.projekt = this.listaprojektow;
             }
         };
 
         this.wczytaj();
+
+        this.nowy = projekt => {
+            if (this.listaprojektow.length === 0) {
+                projekt.id = 1;
+            } else {
+                projekt.id = this.listaprojektow[this.listaprojektow.length - 1].id + 1;
+            }
+
+            projekt.id_user = $rootScope.zalogowany.id;
+
+            this.listaprojektow.push(projekt);
+            this.zapisz();
+
+            return true;
+        };
     }
 
-    nowy(projekt) {
-        if (this.listaprojektow.length === 0) {
-            projekt.id = 1;
-        } else {
-            projekt.id = this.listaprojektow[this.listaprojektow.length - 1].id + 1;
-        }
-
-        this.listaprojektow.push(projekt);
-        this.zapisz();
-
-        return true;
-    }
-
-    pobierz(dostepne) {
+    pobierz(archiwum) {
         this.wczytaj();
 
-        if (angular.isDefined(dostepne)) {
-            return this.listaprojektow.filter(projekt => projekt.stan !== 0);
+        if (archiwum === 1) {
+            return this.listaprojektow.filter(projekt => projekt.archiwum === 1).map(i => {
+                i.termin = new Date(i.termin);
+                return i;
+            });
+        } else {
+            return this.listaprojektow.filter(projekt => projekt.archiwum !== 1).map(i => {
+                i.termin = new Date(i.termin);
+                return i;
+            });
         }
-        return this.listaprojektow;
+
     }
 
     edytuj(projekt) {
@@ -77,34 +100,7 @@ class Projekt {
         return this.listaprojektow[i];
     }
 
-    getCena(id, refundacja) {
-        var i = this.listaprojektow.findIndex((element, index, array) => element.id === id);
-        if (i === -1) {
-            return 0;
-        }
-
-        var projekt = this.listaprojektow[i];
-        var cena = projekt.cena;
-
-        if (angular.isDefined(refundacja) && refundacja) {
-            cena -= projekt.cena * (projekt.refundacja/100);
-        }
-
-        return cena;
-    }
-
-    sprzedaj(id, szt) {
-        var i = this.listaprojektow.findIndex((element, index, array) => element.id === id);
-        if (i === -1) {
-            return false;
-        }
-
-        var projekt = this.listaprojektow[i];
-
-        projekt.stan -= szt;
-
-        return true;
-    }
+ 
 }
 
 export default Projekt;

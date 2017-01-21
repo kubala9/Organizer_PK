@@ -1,35 +1,42 @@
 import tpl from '../views/ObslugaProjektu.html';
+import form from '../views/_formularzProjekt.html';
 
-class ObslugaProjektow {
+class ObslugaProjektu {
 
-  constructor($scope, $mdDialog, Projekt, Notyfikacje) {
+  constructor($rootScope, $scope, $mdDialog, Projekt, Notyfikacje, Klient) {
     "ngInject";
-
+    var self = this;
     this.projekty = [];
+    this.klienci = Klient.pobierz();
+    this.archiwum = 0;
+
     var timeout = null;
 
     let wczytaj = () => {
-      this.projekty = Projekt.pobierz();
+      self.projekty = Projekt.pobierz(this.archiwum);
       $scope.$applyAsync();
       timeout = setTimeout(wczytaj, 5000);
     };
     wczytaj();
 
+    //dodawanie/edytowanie projektu
+    let modyfikowanie = ($scope, $mdDialog, projekt, klienci) => {
+      $scope.klienci = klienci;
 
-    //dodawanie/edytowanie produków
-    let modyfikowanie = ($scope, $mdDialog, projekt) => {
       if (typeof projekt !== "undefined") {
         $scope.projekt = Object.assign({}, projekt);
+        $scope.projekt.termin = new Date($scope.projekt.termin);
       } else {
+        $scope.today = new Date();
+
         $scope.projekt = {
-                nazwa: '',
-                opis: '', 
-                cena: '', 
-                stan: 0,
-                recepta: 0,
-                refundacja: 0
-            };
-        }
+          nazwa: '',
+          opis: null,
+          klient: null,
+          archiwum: 0,
+          termin: null
+        };
+      }
 
       $scope.closeDialog = () => {
         Notyfikacje.zamknij();
@@ -57,15 +64,34 @@ class ObslugaProjektow {
         }
       };
     };
-    this.modyfikacja = function modyfikacja(projekt) {
+
+    this.aktywnyProjekt = $rootScope.aktywnyProjekt || self.projekty[0].id;
+
+    this.ustawProjekt = projekt => {
+      self.aktywnyProjekt = projekt.id;
+      $rootScope.aktywnyProjekt = projekt.id;
+    };
+
+    this.pokazArchiwum = () => {
+      self.archiwum = 1;
+      wczytaj();
+    };
+
+    this.schowajArchiwum = () => {
+      self.archiwum = 0;
+      wczytaj();
+    };
+
+    this.modyfikacja = projekt => {
       $mdDialog.show({
-        locals: {projekt}, //strzykujemy aktualnie dodawany/edytowany projekt
+        template: form,
+        locals: {projekt, klienci: self.klienci},
         controller: modyfikowanie
       });
     };
 
     //usuwanie projektow
-    this.usun = function usun(projekt) {
+    this.usun = projekt => {
       Notyfikacje.potwierdzenie('Czy chcesz usunąć ten projekt?', 'Tak', 'Nie')
           .then(function() {
             if (Projekt.usun(projekt)) {
@@ -88,7 +114,7 @@ class ObslugaProjektow {
   }
 }
 
-export const obslugaprojektow = {
+export const obslugaprojektu = {
   template: tpl,
-  controller: ObslugaProjektow
+  controller: ObslugaProjektu
 };

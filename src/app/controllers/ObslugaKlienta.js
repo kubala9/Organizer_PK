@@ -1,33 +1,32 @@
 import tpl from '../views/ObslugaKlienta.html';
-
+import form from '../views/_formularzKlient.html';
 
 class ObslugaKlienta {
   
   constructor($scope, $mdDialog, Klient, Notyfikacje) {
     "ngInject";
-    this.klient = [];
+    this.klienci = [];
     var timeout = null;
 
     let wczytaj = () => {
-      this.klient = Klient.pobierz();
+      this.klienci = Klient.pobierz();
       $scope.$applyAsync();
-      timeout = setTimeout(wczytaj, 5000);
+      timeout = setTimeout(wczytaj, 3000);
     };
     wczytaj();
 
     let modyfikowanie = ($scope, Notyfikacje, klient) => {
+      console.log(klient);
       if (typeof klient !== "undefined") {
         $scope.klient = Object.assign({}, klient);
-        $scope.klient.haslo = '';
-        $scope.isNew = false;
       } else {
         $scope.klient = {
           nazwa: '',
           email: '',
           telefon: '',
-          adres: ''
+          adres: '',
+          notatka: ''
         };
-        $scope.isNew = true;
       }
 
       $scope.closeDialog = () => {
@@ -51,6 +50,7 @@ class ObslugaKlienta {
 
     this.modyfikacja = function modyfikacja(klient) {
       $mdDialog.show({
+        template: form,
         locals: {klient}, 
         controller: modyfikowanie
       });

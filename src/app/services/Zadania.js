@@ -23,22 +23,6 @@ class Zadania {
         //@TODO defaultowe dane do firstRun
     }
 
-    getPusty() {
-        return {
-            id: null,
-            data: null,
-            sprzedajacy: null,
-            kupujacy: null,
-            produkty: [
-                {
-                    id: null,
-                    ilosc: 1
-                }
-            ],
-            zrealizowane: null
-        };
-    }
-
     nowy(zadanie) {
         if (this.lista.length === 0) {
             zadanie.id = 1;
@@ -55,7 +39,6 @@ class Zadania {
 
     pobierz() {
         this.wczytaj();
-
         return this.lista;
     }
 

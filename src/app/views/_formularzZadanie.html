@@ -1,0 +1,60 @@
+<md-dialog>
+    <md-dialog-content>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 ng-show="!zadanie.id">Dodaj nowe zadanie</h2>
+                <h2 ng-show="zadanie.id">Edytuj zadanie</h2>
+            </div>
+        </md-toolbar>
+
+        <form name="modyfikacjaZadanie" id="modyfikacjaZadanie">
+            <md-content layout="column" layout-padding>
+                <div>
+                    <md-input-container>
+                        <label>Nazwa zadania</label>
+                        <input name="nazwa"  ng-model="zadanie.nazwa" type="text" required />
+                        <div ng-messages="modyfikacjaZadanie.nazwa.$error" multiple md-auto-hide="true">
+                            <div ng-message="required">
+                                Wpisz nazwę zadania!
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div>
+                    <md-input-container>
+                        <label>Opis zadania</label>
+                        <textarea name="opis" ng-model="zadanie.opis"></textarea>
+                        <div ng-messages="modyfikacjaZadanie.opis.$error" multiple md-auto-hide="true">
+                            <div ng-message="required">
+                                Wpisz opis zadania!
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div flex-gt-xs>
+                    <h4>Data zakończenia zadania</h4>
+                    <md-datepicker ng-model="zadanie.termin" md-placeholder="Wybierz datę"></md-datepicker>
+                </div>
+
+                <div>
+                    <md-input-container>
+                        <md-checkbox ng-model="zadanie.archiwum" aria-label="Zrealizowane" ng-true-value="1" ng-false-value="0">
+                            Zrealizowane
+                        </md-checkbox>
+                    </md-input-container>
+                </div>
+            </md-content>
+        </form>
+    </md-dialog-content>
+
+    <md-dialog-actions>
+        <md-button ng-click="closeDialog()" class="md-primary md-default-theme">
+            Zamknij
+        </md-button>
+        <md-button ng-click="save()" class="md-primary" ng-disabled="!modyfikacjaZadanie.$valid">
+            Zapisz
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

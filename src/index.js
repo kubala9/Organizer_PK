@@ -25,21 +25,25 @@ import Notyfikacje from './app/services/Notyfikacje';
 import {obslugauzytkownika} from './app/controllers/ObslugaUzytkownika';
 import Uzytkownik from './app/services/Uzytkownik';
 
-import {obslugaklienta} from './app/controllers/ObslugaKlienta.js';
+import {obslugaklienta} from './app/controllers/ObslugaKlienta';
 import Klient from './app/services/Klient';
 
-import {obslugaprojektu} from './app/controllers/ObslugaProjektu.js';
+import {obslugaprojektow} from './app/controllers/ObslugaProjektow';
+import {obslugaprojektu} from './app/controllers/ObslugaProjektu';
 import Projekt from './app/services/Projekt';
 
-import {obslugazadan} from './app/controllers/ObslugaZadan.js';
+import {obslugazadan} from './app/controllers/ObslugaZadan';
 import Zadania from './app/services/Zadania';
 
 import {obsluganotatek} from './app/controllers/ObslugaNotatek';
 import Notatki from './app/services/Notatki';
 
-angular
+var app = angular
   .module('organizer', ['ui.router', 'ngMaterial', 'ngMdIcons', 'ngMessages', 'ngStorage'])
   .config(routesConfig)
+    .config(function($compileProvider) {
+    $compileProvider.preAssignBindingsEnabled(true);
+  })
   .component('organizer', main)
   .component('organizerHeader', header)
   .component('organizerMenu', menu)
@@ -51,19 +55,24 @@ angular
 
     .component('obslugaUzytkownika', obslugauzytkownika)
     .service('Uzytkownik', Uzytkownik)
+ 
+    .component('obslugaKlienta', obslugaklienta)
+    .service('Klient', Klient)
 
-   .component('obslugaKlienta', obslugaklienta)
-   .service('Klient', Klient)
-
+    .component('obslugaProjektow', obslugaprojektow)
     .component('obslugaProjektu', obslugaprojektu)
     .service('Projekt', Projekt)
 
     .component('obslugaZadan', obslugazadan)
-     .service('Zadania', Zadania)
+    .service('Zadania', Zadania)
 
     .component('obslugaNotatek', obsluganotatek)
     .service('Notatki', Notatki)
-
+    .config($mdThemingProvider => {
+        $mdThemingProvider.theme('default')
+        .primaryPalette('blue')
+        .accentPalette('grey');
+    })
     .run(($transitions, $rootScope, $state) => {
         $transitions.onStart({ }, function(trans) {
             $rootScope.currentNavItem = trans.$to().name;

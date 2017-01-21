@@ -8,6 +8,7 @@ import 'angular-material/angular-material.css';
 import 'angular-material-icons';
 import 'angular-messages';
 import 'ngStorage';
+import 'material-date-picker';
 
 import routesConfig from './routes';
 
@@ -28,6 +29,7 @@ import Uzytkownik from './app/services/Uzytkownik';
 import {obslugaklienta} from './app/controllers/ObslugaKlienta';
 import Klient from './app/services/Klient';
 
+import {obslugaprojektow} from './app/controllers/ObslugaProjektow';
 import {obslugaprojektu} from './app/controllers/ObslugaProjektu';
 import Projekt from './app/services/Projekt';
 
@@ -55,6 +57,7 @@ var app = angular
     .component('obslugaKlienta', obslugaklienta)
     .service('Klient', Klient)
 
+    .component('obslugaProjektow', obslugaprojektow)
     .component('obslugaProjektu', obslugaprojektu)
     .service('Projekt', Projekt)
 

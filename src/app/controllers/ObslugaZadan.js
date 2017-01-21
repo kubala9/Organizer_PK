@@ -1,112 +1,104 @@
-import angular from 'angular';
 import tpl from '../views/ObslugaZadan.html';
+import form from '../views/_formularzZadanie.html';
 
 class ObslugaZadan {
- 
-  constructor($rootScope, $scope, $mdDialog, Notyfikacje, Produkt, Zadania) {
-      var self = this;
 
-      this.projekty = Produkt.pobierz(true);
-      this.koszyk = [];
+    constructor($rootScope, $scope, $mdDialog, Notyfikacje, Zadania) {
+        "ngInject";
+        var self = this;
+        this.zadania = [];
 
-      //dodawanie rzeczy do koszyka
-      let dodawanie = ($scope, projekt, koszyk) => {
-          $scope.projekt = projekt;
-          $scope.ilosc = 1;
+        var timeout = null;  
 
-          $scope.save = () => {
-              koszyk.push({
-                  id: projekt.id,
-                  ilosc: $scope.ilosc
-              });
+        let wczytaj = () => {
+            self.zadania = Zadania.pobierz($rootScope.aktywnyProjekt);
+            $scope.$applyAsync();
+            timeout = setTimeout(wczytaj, 5000);
+        };
+        wczytaj();
 
-              Notyfikacje.zamknij();
-              Notyfikacje.powiadomienie('Produkt dodany do koszyka.');
-          };
+        $rootScope.$watch('aktywnyProjekt', () => {
+            wczytaj();
+        }, true);
 
-          $scope.closeDialog = () => {
-              Notyfikacje.zamknij();
-          };
-      };
+        //dodawanie/edytowanie produków
+        let modyfikowanie = ($scope, $mdDialog, zadanie) => {
 
-      let sprawdzKoszyk = ($scope, koszyk) => {
-          var copy = angular.copy(koszyk);
-          $scope.koszyk = copy.map(item => {
-              return {
-                  id: item.id,
-                  ilosc: item.ilosc,
-                  object: Produkt.getProdukt(item.id),
-                  wartosc: Produkt.getCena(item.id, true) * item.ilosc
-              };
-          });
+            if (typeof zadanie !== "undefined") {
+                $scope.zadanie = Object.assign({}, zadanie);
+                $scope.zadanie.termin = new Date($scope.zadanie.termin);
+            } else {
+                $scope.today = new Date();
 
-          $scope.$watch('koszyk', () => {
-              var sumaZl = 0;
-              var sumaSzt = 0;
-              $scope.koszyk.forEach(projekt => {
-                  sumaZl += projekt.wartosc;
-                    sumaSzt += parseInt(projekt.ilosc, 10);
+                $scope.zadanie = {
+                    nazwa: '',
+                    opis: null,
+                    klient: null,
+                    archiwum: 0,
+                    termin: null
+                };
+            }
+
+            $scope.closeDialog = () => {
+                Notyfikacje.zamknij();
+            };
+
+            $scope.save = () => {
+                zadanie = $scope.zadanie;
+
+                if (zadanie.id) {
+                    if (Zadania.edytuj(zadanie)) {
+                        Notyfikacje.zamknij();
+                        Notyfikacje.powiadomienie(zadanie.nazwa + ' został zapisany!');
+                    } else {
+                        Notyfikacje.zamknij();
+                        Notyfikacje.powiadomienie(zadanie.nazwa + ' nie został zapisany');
+                    }
+                } else {
+                    if (Zadania.nowy(zadanie)) {
+                        Notyfikacje.zamknij();
+                        Notyfikacje.powiadomienie(zadanie.nazwa + ' został dodany!');
+                    } else {
+                        Notyfikacje.zamknij();
+                        Notyfikacje.powiadomienie(zadanie.nazwa + ' nie został dodany!');
+                    }
+                }
+            };
+        };
+
+        this.modyfikacja = zadanie => {
+            $mdDialog.show({
+                template: form,
+                locals: {zadanie},
+                controller: modyfikowanie
+            });
+        };
+
+        //usuwanie zadanieow
+        this.usun = zadanie => {
+            Notyfikacje.potwierdzenie('Czy chcesz usunąć te zadanie?', 'Tak', 'Nie')
+                .then(function() {
+                    if (Zadania.usun(zadanie)) {
+                        Notyfikacje.zamknij();
+                        Notyfikacje.powiadomienie('Zadanie zostało usunięte!');
+                    } else {
+                        Notyfikacje.zamknij();
+                        Notyfikacje.powiadomienie('Zadanie nie zostało usunięte!');
+                    }
+                }, function() {
+                    Notyfikacje.zamknij();
+                    Notyfikacje.powiadomienie('Zadanie nie zostało usunięte!');
                 });
-              $scope.sumaSzt = sumaSzt;
-              $scope.sumaZl = sumaZl;
-          }, true);
+        };
 
-          $scope.usunProdukt = projekt => {
-              var i = $scope.koszyk.indexOf(projekt);
-
-              koszyk.splice(i, 1);
-              $scope.koszyk.splice(i, 1);
-          };
-
-          $scope.save = () => {
-              var zadanie = Zadania.getPusty();
-
-              zadanie.projekty = $scope.koszyk.map(item => {
-                    return {
-                        id: item.id,
-                        ilosc: item.ilosc
-                    };
-              });
-
-              zadanie.kupujacy = $rootScope.zalogowany.id;
-
-              if (Zadania.nowy(zadanie)) {
-                  zadanie.projekty.forEach(projekt => {
-                      Produkt.sprzedaj(projekt.id, projekt.ilosc);
-                    });
-
-                  koszyk = [];
-                  $scope.koszyk = [];
-
-                  Notyfikacje.zamknij();
-                  Notyfikacje.powiadomienie('Zamówienie zostało przekazane do realizacji.');
-
-              } else {
-                  Notyfikacje.powiadomienie('Zamówienie nie zostało przekazane do realizacji!');
-              }
-          };
-
-          $scope.closeDialog = () => {
-              Notyfikacje.zamknij();
-          };
-      };
-
-      this.dodajDoKoszyka = function dodajDoKoszyka(projekt) {
-          $mdDialog.show({
-              locals: {projekt, koszyk: self.koszyk},
-              controller: dodawanie
-          });
-      };
-
-      this.pokazKoszyk = () => {
-          $mdDialog.show({
-              locals: {koszyk: self.koszyk},
-              controller: sprawdzKoszyk
-          });
-      };
-  }
+        this.$onDestroy = function() {
+            clearTimeout(timeout);
+            timeout = null;
+        };
+    }
 }
+
 export const obslugazadan = {
-  template: tpl,
-  controller: ObslugaZadan
+    template: tpl,
+    controller: ObslugaZadan
 };

@@ -2,7 +2,7 @@ export default routesConfig;
 
 /** @ngInject */
 function routesConfig($stateProvider, $urlRouterProvider, $locationProvider) {
-  $locationProvider.html5Mode(true).hashPrefix('!');
+  $locationProvider.html5Mode(true).hashPrefix('#');
   $urlRouterProvider.otherwise('organizer/start');
 
   $stateProvider
@@ -31,14 +31,10 @@ function routesConfig($stateProvider, $urlRouterProvider, $locationProvider) {
     })
     .state('organizer.projekt', {
       url: 'projekty',
-      component: 'obslugaProjektu',
+      component: 'obslugaProjektow',
       data: {pageTitle: 'Projekt'}
     })
-    .state('organizer.zadania', {
-      url: 'zadania',
-      component: 'obslugaZadan',
-      data: {pageTitle: 'Zadanie'}
-    }).state('organizer.notatki', {
+    .state('organizer.notatki', {
       url: 'notatki',
       component: 'obslugaNotatek',
       data: {pageTitle: 'Notatki'}

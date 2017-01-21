@@ -22,11 +22,13 @@ class ObslugaProjektu {
     //dodawanie/edytowanie produków
     let modyfikowanie = ($scope, $mdDialog, projekt, klienci) => {
       $scope.klienci = klienci;
-      $scope.today = new Date();
 
       if (typeof projekt !== "undefined") {
         $scope.projekt = Object.assign({}, projekt);
+        $scope.projekt.termin = new Date($scope.projekt.termin);
       } else {
+        $scope.today = new Date();
+
         $scope.projekt = {
           nazwa: '',
           opis: null,
@@ -63,7 +65,12 @@ class ObslugaProjektu {
       };
     };
 
-    this.aktywnyProjekt = 3;
+    this.aktywnyProjekt = $rootScope.aktywnyProjekt || self.projekty[0].id;
+
+    this.ustawProjekt = projekt => {
+      self.aktywnyProjekt = projekt.id;
+      $rootScope.aktywnyProjekt = projekt.id;
+    };
 
     this.pokazArchiwum = () => {
       self.archiwum = 1;
@@ -98,10 +105,6 @@ class ObslugaProjektu {
             Notyfikacje.zamknij();
             Notyfikacje.powiadomienie('Projekt nie został usunięty!');
           });
-    };
-
-    this.ustawProjekt = projekt => {
-      console.log(projekt);
     };
 
     this.$onDestroy = function() {

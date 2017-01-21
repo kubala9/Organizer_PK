@@ -40,9 +40,15 @@ class Projekt {
         this.wczytaj();
 
         if (archiwum === 1) {
-            return this.listaprojektow.filter(projekt => projekt.archiwum === 1);
+            return this.listaprojektow.filter(projekt => projekt.archiwum === 1).map(i => {
+                i.termin = new Date(i.termin);
+                return i;
+            });
         } else {
-            return this.listaprojektow.filter(projekt => projekt.archiwum !== 1);
+            return this.listaprojektow.filter(projekt => projekt.archiwum !== 1).map(i => {
+                i.termin = new Date(i.termin);
+                return i;
+            });
         }
 
     }

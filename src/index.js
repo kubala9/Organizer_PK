@@ -8,7 +8,6 @@ import 'angular-material/angular-material.css';
 import 'angular-material-icons';
 import 'angular-messages';
 import 'ngStorage';
-import 'material-date-picker';
 
 import routesConfig from './routes';
 

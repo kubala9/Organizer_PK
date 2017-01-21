@@ -19,7 +19,11 @@ class ObslugaProjektu {
     };
     wczytaj();
 
+<<<<<<< HEAD
     //dodawanie/edytowanie projektu
+=======
+    //dodawanie/edytowanie produków
+>>>>>>> 27898d5068f6ffa898e39ea80778cb090ce13e7b
     let modyfikowanie = ($scope, $mdDialog, projekt, klienci) => {
       $scope.klienci = klienci;
 

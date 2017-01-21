@@ -2,7 +2,11 @@
     <md-dialog-content>
         <md-toolbar>
             <div class="md-toolbar-tools">
+<<<<<<< HEAD
                 <h2 ng-show="!zadanie.id">Dodaj nowe zadanie</h2>
+=======
+                <h2 ng-show="!zadanie.id">Dodaj nowy zadanie</h2>
+>>>>>>> 27898d5068f6ffa898e39ea80778cb090ce13e7b
                 <h2 ng-show="zadanie.id">Edytuj zadanie</h2>
             </div>
         </md-toolbar>
@@ -11,7 +15,11 @@
             <md-content layout="column" layout-padding>
                 <div>
                     <md-input-container>
+<<<<<<< HEAD
                         <label>Nazwa zadania</label>
+=======
+                        <label>Nazwa zadanieu</label>
+>>>>>>> 27898d5068f6ffa898e39ea80778cb090ce13e7b
                         <input name="nazwa"  ng-model="zadanie.nazwa" type="text" required />
                         <div ng-messages="modyfikacjaZadanie.nazwa.$error" multiple md-auto-hide="true">
                             <div ng-message="required">

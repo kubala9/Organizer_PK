@@ -13,12 +13,21 @@ class App {
       $state.go('organizer.projekt');
 
     if (!angular.isArray($localStorage.uzytkownik)) {
+<<<<<<< HEAD
      // this.firstInitUzytkownik();
     }
 
     if (!angular.isArray($localStorage.klient)) {
      // this.Klient = Klient;
      // this.firstInitKlient();
+=======
+      //this.firstInitUzytkownik();
+    }
+
+    if (!angular.isArray($localStorage.klient)) {
+    //  this.Klient = Klient;
+      //this.firstInitKlient();
+>>>>>>> 27898d5068f6ffa898e39ea80778cb090ce13e7b
     }
 
   }

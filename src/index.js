@@ -59,6 +59,12 @@ var app = angular
     .component('obslugaKlienta', obslugaklienta)
     .service('Klient', Klient)
 
+<<<<<<< HEAD
+=======
+    .component('obslugaKlienta', obslugaklienta)
+    .service('Klient', Klient)
+
+>>>>>>> 27898d5068f6ffa898e39ea80778cb090ce13e7b
     .component('obslugaProjektow', obslugaprojektow)
     .component('obslugaProjektu', obslugaprojektu)
     .service('Projekt', Projekt)

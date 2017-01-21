@@ -20,8 +20,19 @@ class Start {
       if (user.length === 1) {
         $rootScope.zalogowany = user[0];
         $rootScope.zalogowany.uzytkownik = 1;
+<<<<<<< HEAD
 
         Notyfikacje.powiadomienie('Zalogowałeś się.');
+=======
+
+        Notyfikacje.powiadomienie('Zalogowałeś się.');
+
+        $state.go('organizer.uzytkownik');
+      } else {
+        Notyfikacje.powiadomienie('Błąd logowania.');
+      }
+    };
+>>>>>>> 27898d5068f6ffa898e39ea80778cb090ce13e7b
 
         $state.go('organizer.uzytkownik');
       } else {

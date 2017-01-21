@@ -4,6 +4,7 @@ class Projekt {
     constructor($localStorage, $rootScope) {
         "ngInject";
 
+<<<<<<< HEAD
         this.listaprojektow = [{
           nazwa: 'prodzekt',
           opis: 'trzeba zdazyc',
@@ -18,6 +19,9 @@ class Projekt {
           archiwum: 0,
           termin: null
         }];
+=======
+        this.listaprojektow = [];
+>>>>>>> 27898d5068f6ffa898e39ea80778cb090ce13e7b
 
         this.wczytaj = () => {
             if (angular.isDefined($localStorage.projekt)) {

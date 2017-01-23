@@ -13,11 +13,13 @@
 
                 <p>Termin wykonania: {{ zadanie.termin | date: 'd.MM.yyyy' }}</p>
 
-                <md-button class="md-secondary md-icon-button" ng-click="$ctrl.modyfikacja(projekt)">
+                <p>Pracownik: {{ $ctrl.getPracownik(zadanie.pracownik) }}</p>
+
+                <md-button class="md-secondary md-icon-button" ng-click="$ctrl.modyfikacja(zadanie)">
                     <ng-md-icon icon="mode_edit" style="fill: grey;" size="30"></ng-md-icon>
                 </md-button>
 
-                <md-button class="md-secondary md-icon-button" ng-click="$ctrl.usun(projekt)">
+                <md-button class="md-secondary md-icon-button" ng-click="$ctrl.usun(zadanie)">
                     <ng-md-icon icon="delete" style="fill: grey;" size="30"></ng-md-icon>
                 </md-button>
             </md-list-item>

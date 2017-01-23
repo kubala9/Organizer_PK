@@ -1,5 +1,5 @@
 <md-dialog>
-    <md-dialog-content>
+    <md-dialog-content style="width: 400px;">
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2 ng-show="!zadanie.id">Dodaj nowy zadanie</h2>
@@ -11,7 +11,7 @@
             <md-content layout="column" layout-padding>
                 <div>
                     <md-input-container>
-                        <label>Nazwa zadanieu</label>
+                        <label>Nazwa zadania</label>
                         <input name="nazwa"  ng-model="zadanie.nazwa" type="text" required />
                         <div ng-messages="modyfikacjaZadanie.nazwa.$error" multiple md-auto-hide="true">
                             <div ng-message="required">
@@ -37,7 +37,18 @@
                     <h4>Data zakończenia zadania</h4>
                     <md-datepicker ng-model="zadanie.termin" md-placeholder="Wybierz datę"></md-datepicker>
                 </div>
-
+                <div>
+                    <div>
+                        <md-input-container>
+                            <label>Przydzielony pracownik</label>
+                            <md-select ng-model="zadanie.pracownik" required>
+                                <md-option ng-repeat="item in uzytkownicy" ng-value="item.id">
+                                    {{ item.imie }} {{ item.nazwisko }}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                </div>
                 <div>
                     <md-input-container>
                         <md-checkbox ng-model="zadanie.archiwum" aria-label="Zrealizowane" ng-true-value="1" ng-false-value="0">

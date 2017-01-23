@@ -3,10 +3,11 @@ import form from '../views/_formularzZadanie.html';
 
 class ObslugaZadan {
 
-    constructor($rootScope, $scope, $mdDialog, Notyfikacje, Zadania) {
+    constructor($rootScope, $scope, $mdDialog, Notyfikacje, Zadania, Uzytkownik) {
         "ngInject";
         var self = this;
         this.zadania = [];
+        this.uzytkownicy = Uzytkownik.pobierz();
 
         var timeout = null;  
 
@@ -18,11 +19,25 @@ class ObslugaZadan {
         wczytaj();
 
         $rootScope.$watch('aktywnyProjekt', () => {
+            clearTimeout(timeout);
+            timeout = null;
             wczytaj();
         }, true);
 
+        this.getPracownik = id => {
+            var pracownik = this.uzytkownicy.filter(i => i.id === id)[0];
+            return pracownik.imie + pracownik.nazwisko;
+        };
+
+        this.zakonczZadanie = zadanie => {
+            zadanie.zrealizowane = 1;
+            //  @TODO...
+        };
+
+
         //dodawanie/edytowanie produków
-        let modyfikowanie = ($scope, $mdDialog, zadanie) => {
+        let modyfikowanie = ($scope, $mdDialog, zadanie, uzytkownicy) => {
+            $scope.uzytkownicy = uzytkownicy;
 
             if (typeof zadanie !== "undefined") {
                 $scope.zadanie = Object.assign({}, zadanie);
@@ -33,9 +48,10 @@ class ObslugaZadan {
                 $scope.zadanie = {
                     nazwa: '',
                     opis: null,
-                    klient: null,
-                    archiwum: 0,
-                    termin: null
+                    uzytkownik: null,
+                    termin: null,
+                    zrealizowane: 0,
+                    id_projekt: 0
                 };
             }
 
@@ -46,21 +62,23 @@ class ObslugaZadan {
             $scope.save = () => {
                 zadanie = $scope.zadanie;
 
+                zadanie.id_projekt = $rootScope.aktywnyProjekt;
+
                 if (zadanie.id) {
                     if (Zadania.edytuj(zadanie)) {
                         Notyfikacje.zamknij();
-                        Notyfikacje.powiadomienie(zadanie.nazwa + ' został zapisany!');
+                        Notyfikacje.powiadomienie(zadanie.nazwa + ' zostało zapisane!');
                     } else {
                         Notyfikacje.zamknij();
-                        Notyfikacje.powiadomienie(zadanie.nazwa + ' nie został zapisany');
+                        Notyfikacje.powiadomienie(zadanie.nazwa + ' nie zostało zapisane');
                     }
                 } else {
                     if (Zadania.nowy(zadanie)) {
                         Notyfikacje.zamknij();
-                        Notyfikacje.powiadomienie(zadanie.nazwa + ' został dodany!');
+                        Notyfikacje.powiadomienie(zadanie.nazwa + ' zostało dodane!');
                     } else {
                         Notyfikacje.zamknij();
-                        Notyfikacje.powiadomienie(zadanie.nazwa + ' nie został dodany!');
+                        Notyfikacje.powiadomienie(zadanie.nazwa + ' nie zostało dodane!');
                     }
                 }
             };
@@ -69,7 +87,7 @@ class ObslugaZadan {
         this.modyfikacja = zadanie => {
             $mdDialog.show({
                 template: form,
-                locals: {zadanie},
+                locals: {zadanie, uzytkownicy: self.uzytkownicy},
                 controller: modyfikowanie
             });
         };

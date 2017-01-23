@@ -1,10 +1,11 @@
 import angular from 'angular';
 
 class Zadania {
-    constructor($localStorage) {
+    constructor($localStorage, $rootScope) {
         "ngInject";
 
         this.lista = [];
+        this.id = $rootScope.zalogowany.id;
 
         this.wczytaj = function wczytaj() {
             if (angular.isDefined($localStorage.zadanie)) {
@@ -19,8 +20,6 @@ class Zadania {
         };
 
         this.wczytaj();
-
-        //@TODO defaultowe dane do firstRun
     }
 
     nowy(zadanie) {
@@ -29,6 +28,7 @@ class Zadania {
         } else {
             zadanie.id = this.lista[this.lista.length - 1].id + 1;
         }
+        zadanie.id_user = this.id;
 
         zadanie.data = new Date().getTime();
         this.lista.push(zadanie);
@@ -37,10 +37,10 @@ class Zadania {
         return true;
     }
 
-    pobierz() {
+    pobierz(idProjekt) {
         this.wczytaj();
 
-        return this.lista;
+        return this.lista.filter(item => item.id_user === this.id && item.id_projekt === idProjekt);
     }
 
     edytuj(zadanie) {

@@ -1,23 +1,26 @@
+ <div layout="column" layout-align="top left">
+        <h2>Lista zadań</h2>
 
-
-    <div layout="column" layout-align="top left">
-        <h3>Lista zadań</h3>
-
-        <p><br>Brak zadań w tym projekcie!</p>
+        <div class="warning" ng-show="$ctrl.zadania.length == 0 && $ctrl.aktywnyProjekt">
+            <ng-md-icon icon="info" style="fill: grey; display: inline-block;" size="20"></ng-md-icon> Brak zadań w tym projekcie!
+        </div>
+        <div class="warning" ng-show="!$ctrl.aktywnyProjekt">
+            <ng-md-icon icon="warning" style="fill: grey; display: inline-block;" size="20"></ng-md-icon> Brak aktywnego projektu, wybierz go po prawej stronie
+        </div>
 
         <md-list>
-            <md-list-item ng-repeat="zadanie in $ctrl.zadania | orderBy: '-termin'">
-                <ng-md-icon ng-click="$ctrl.zakonczZadanie(zadanie)" icon="check_box_outline_blank" style="fill: grey;" size="30"></ng-md-icon>
+            <md-list-item ng-repeat="zadanie in $ctrl.zadania | orderBy: '-termin'" class="md-3-line">
+                <div class="md-list-item-text">
+                    <h3><strong>{{ zadanie.nazwa }}</strong></h3>
 
-                <h3>{{ zadanie.nazwa }}</h3>
+                    <h4 ng-show="zadanie.termin">Termin wykonania: {{ zadanie.termin | date: 'dd.MM.yyyy' }}</h4>
+                    <h4 ng-show="zadanie.realizacja">Data wykonania: {{ zadanie.realizacja | date: 'dd.MM.yyyy' }}</h4>
 
-<<<<<<< HEAD
-                <p>Termin wykonania: {{ zadanie.termin | date: 'dd.MM.yyyy' }}</p>
-=======
-                <p>Termin wykonania: {{ zadanie.termin | date: 'd.MM.yyyy' }}</p>
->>>>>>> 27898d5068f6ffa898e39ea80778cb090ce13e7b
+                    <h4>Pracownik: {{ $ctrl.getPracownik(zadanie.pracownik) }}</h4>
+                </div>
 
-                <p>Pracownik: {{ $ctrl.getPracownik(zadanie.pracownik) }}</p>
+                <ng-md-icon ng-show="!zadanie.zrealizowane" class="md-secondary" ng-click="$ctrl.zakonczZadanie(zadanie)" icon="check_box_outline_blank" style="fill: grey;" size="30"></ng-md-icon>
+                <ng-md-icon  ng-show="zadanie.zrealizowane" class="md-secondary" icon="check_box" style="fill: grey;" size="30"></ng-md-icon>
 
                 <md-button class="md-secondary md-icon-button" ng-click="$ctrl.modyfikacja(zadanie)">
                     <ng-md-icon icon="mode_edit" style="fill: grey;" size="30"></ng-md-icon>
@@ -29,7 +32,7 @@
             </md-list-item>
         </md-list>
 
-        <div class="text-center">
+        <div class="text-center" ng-show="$ctrl.aktywnyProjekt">
             <md-button ng-click="$ctrl.modyfikacja()" class="md-primary">
                 Dodaj nowe zadanie
             </md-button>

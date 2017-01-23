@@ -3,11 +3,16 @@
 </h2>
 
 <md-content>
+    <div class="warning" ng-show="$ctrl.klienci.length == 0">
+        <ng-md-icon icon="info" style="fill: grey; display: inline-block;" size="20"></ng-md-icon> Brak klientów
+    </div>
     <md-list>
         <md-list-item ng-repeat="klient in $ctrl.klienci" class="md-3-line" ng-click="$ctrl.modyfikacja(klient)">
             <div class="md-list-item-text">
-                <h3>{{klient.nazwa }}</h3>
+                <h3><strong>{{klient.nazwa }}</strong></h3>
+
                 <h4>{{klient.email}}</h4>
+
                 <md-button class="md-secondary md-icon-button" ng-click="$ctrl.modyfikacja(klient)">
                     <ng-md-icon  icon="mode_edit" style="fill: grey;" size="30"></ng-md-icon>
                 </md-button>

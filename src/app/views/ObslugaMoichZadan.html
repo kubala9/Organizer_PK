@@ -1,0 +1,25 @@
+<div layout="column" layout-align="top left">
+    <h2>Lista moich zadań</h2>
+
+    <div class="warning" ng-show="$ctrl.zadania.length == 0">
+        <ng-md-icon icon="info" style="fill: grey; display: inline-block;" size="20"></ng-md-icon> Brak zadań!
+    </div>
+
+    <md-list>
+        <md-list-item ng-repeat="zadanie in $ctrl.zadania | orderBy: '-termin'" class="md-3-line">
+            <div class="md-list-item-text">
+                <h3><strong>{{ zadanie.nazwa }}</strong></h3>
+
+                <h4 ng-show="zadanie.termin">Termin wykonania: {{ zadanie.termin | date: 'dd.MM.yyyy' }}</h4>
+                <h4 ng-show="zadanie.realizacja">Data wykonania: {{ zadanie.realizacja | date: 'dd.MM.yyyy' }}</h4>
+
+                <h4>Projekt: {{ $ctrl.getProjekt(zadanie.id_projekt) }}</h4>
+            </div>
+
+            <ng-md-icon ng-show="!zadanie.zrealizowane" class="md-secondary" ng-click="$ctrl.zakonczZadanie(zadanie)" icon="check_box_outline_blank" style="fill: grey;" size="30"></ng-md-icon>
+            <ng-md-icon  ng-show="zadanie.zrealizowane" class="md-secondary" icon="check_box" style="fill: grey;" size="30"></ng-md-icon>
+        </md-list-item>
+    </md-list>
+</div>
+
+<div flex></div>

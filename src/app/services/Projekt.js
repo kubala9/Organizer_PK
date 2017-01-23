@@ -4,24 +4,9 @@ class Projekt {
     constructor($localStorage, $rootScope) {
         "ngInject";
 
-
-        this.listaprojektow = [{
-          nazwa: 'prodzekt',
-          opis: 'trzeba zdazyc',
-          klient: 1,
-          archiwum: 0,
-          termin: null
-        },
-                              {
-          nazwa: 'progsdkt',
-          opis: 'tsddazyc',
-          klient: 1,
-          archiwum: 0,
-          termin: null
-        }];
-
         this.listaprojektow = [];
         this.id = $rootScope.zalogowany.id;
+
         this.wczytaj = () => {
             if (angular.isDefined($localStorage.projekt)) {
                 this.listaprojektow = $localStorage.projekt;
@@ -36,10 +21,27 @@ class Projekt {
 
         this.wczytaj();
 
+        this.nowy = projekt => {
+            if (this.listaprojektow.length === 0) {
+                projekt.id = 1;
+            } else {
+                projekt.id = this.listaprojektow[this.listaprojektow.length - 1].id + 1;
+            }
+
+            projekt.id_user = $rootScope.zalogowany.id;
+
+            this.listaprojektow.push(projekt);
+            this.zapisz();
+
+            return true;
+        };
+    }
+
     pobierz(archiwum) {
         this.wczytaj();
 
-        let lista = this.listaprojektow.filter(projekt => projekt.id_user === this.id);
+        var lista = this.listaprojektow.filter(item => item.id_user === this.id);
+
         if (archiwum === 1) {
             lista = lista.filter(projekt => projekt.archiwum === 1);
         } else {
@@ -52,19 +54,13 @@ class Projekt {
         });
     }
 
-    nowy(projekt) {
-        if (this.listaprojektow.length === 0) {
-            projekt.id = 1;
-        } else {
-            projekt.id = this.listaprojektow[this.listaprojektow.length - 1].id + 1;
-        }
+    pobierzWszystkie() {
+        this.wczytaj();
 
-        projekt.id_user = this.id;
-
-        this.listaprojektow.push(projekt);
-        this.zapisz();
-
-        return true;
+        return this.listaprojektow.map(i => {
+            i.termin = new Date(i.termin);
+            return i;
+        });
     }
 
     edytuj(projekt) {
@@ -101,7 +97,7 @@ class Projekt {
         return this.listaprojektow[i];
     }
 
-
+ 
 }
 
 export default Projekt;

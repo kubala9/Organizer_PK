@@ -1,22 +1,22 @@
 import tpl from '../views/ObslugaUzytkownika.html';
 import form from '../views/_formularzUzytkownika.html';
+import pokazZadania from '../views/_zadaniaUzytkownika.html';
+
 class ObslugaUzytkownika {
 
-  constructor($scope, $mdDialog, Uzytkownik, Notyfikacje) {
+  constructor($rootScope, $scope, $mdDialog, Projekt, Uzytkownik, Notyfikacje, Zadania) {
 
     this.uzytkownicy = [];
     var timeout = null;
-
     let wczytaj = () => {
-      this.uzytkownicy = Uzytkownik.pobierz();
-        console.log(Uzytkownik.pobierz());
-      $scope.$applyAsync();
-      timeout = setTimeout(wczytaj, 5000);
+        this.uzytkownicy = Uzytkownik.pobierz();
+        $scope.$applyAsync();
+        timeout = setTimeout(wczytaj, 1000);
     };
     wczytaj();
 
     //dodawanie/edytowanie pracowników
-    let modyfikowanie = ($scope, $mdDialog, $rootScope, uzytkownik) => {
+    let modyfikowanie = ($scope, $mdDialog, uzytkownik) => {
       if (typeof uzytkownik !== "undefined") {
         $scope.uzytkownik = Object.assign({}, uzytkownik);
         $scope.uzytkownik.haslo = '';
@@ -24,12 +24,10 @@ class ObslugaUzytkownika {
         $scope.uzytkownik = {
             login: '',
             haslo: '',
-            imie: '',
-            nazwisko: '',
+            name: '',
             email: '',
             telefon: '',
-            dane: '',
-            id_manager:  $rootScope.zalogowany.id
+            dane: ''
         };
       }
 
@@ -42,48 +40,71 @@ class ObslugaUzytkownika {
 
         if (uzytkownik.id) {
           if (Uzytkownik.edytuj(uzytkownik)) {
-              uzytkownik.id_manager=$rootScope.zalogowany.id;
             Notyfikacje.zamknij();
-            Notyfikacje.powiadomienie('Pracwonik ' + uzytkownik.imie + ' ' + uzytkownik.nazwisko + ' został dodany!');
+            Notyfikacje.powiadomienie('Pracwonik ' + uzytkownik.name + ' został zapisany!');
           } else {
-            Notyfikacje.powiadomienie('Pracownik ' + uzytkownik.imie + ' ' + uzytkownik.nazwisko + ' nie został dodany!');
+            Notyfikacje.powiadomienie('Pracownik ' + uzytkownik.name + ' nie został zapisany!');
           }
         } else {
           if (Uzytkownik.nowy(uzytkownik)) {
             Notyfikacje.zamknij();
-            Notyfikacje.powiadomienie('Pracownik ' + uzytkownik.imie + ' ' + uzytkownik.nazwisko + ' został dodany!');
+            Notyfikacje.powiadomienie('Pracownik ' + uzytkownik.name + ' został dodany!');
           } else {
-            Notyfikacje.powiadomienie('Pracownik ' + uzytkownik.imie + ' ' + uzytkownik.nazwisko + ' nie został dodany!');
+            Notyfikacje.powiadomienie('Pracownik ' + uzytkownik.name + ' nie został dodany!');
           }
         }
       };
     };
-    this.modyfikacja = function modyfikacja(uzytkownik) {
+    this.modyfikacja = uzytkownik => {
       $mdDialog.show({
-          template: form,
-        locals: {uzytkownik}, //strzykujemy aktualnie dodawanego/edytowanego sprzedawce
+        template: form,
+        locals: {uzytkownik}, 
         controller: modyfikowanie
       });
     };
 
+    this.lista = uzytkownik => {
+        let listazadan = Zadania.pobierzPerPracownik(uzytkownik.id);
+
+        listazadan.map(i => {
+            i.projekt = Projekt.getProjekt(i.id_projekt);
+            return i;
+        });
+
+        $mdDialog.show({
+            template: pokazZadania,
+            locals: {zadania: listazadan, uzytkownik},
+            controller: ($scope, zadania) => {
+                $scope.uzytkownik = uzytkownik;
+                $scope.zadania = zadania;
+
+                $scope.closeDialog = () => {
+                    Notyfikacje.zamknij();
+                };
+
+
+            }
+        });
+    };
+
     //usuwanie pracowników
-    this.usun = function usun(uzytkownik) {
-      Notyfikacje.potwierdzenie('Czy chcesz usunąć pracownika ' + uzytkownik.imie + ' ' + uzytkownik.nazwisko + '?', 'Tak', 'Nie')
+    this.usun = uzytkownik => {
+      Notyfikacje.potwierdzenie('Czy chcesz usunąć pracownika ' + uzytkownik.name + '?', 'Tak', 'Nie')
           .then(function() {
             if (Uzytkownik.usun(uzytkownik)) {
               Notyfikacje.zamknij();
-              Notyfikacje.powiadomienie('Pracownik ' + uzytkownik.imie + ' ' + uzytkownik.nazwisko + ' został usunięty!');
+              Notyfikacje.powiadomienie('Pracownik ' + uzytkownik.name + ' został usunięty!');
             } else {
               Notyfikacje.zamknij();
-              Notyfikacje.powiadomienie('Pracownik ' + uzytkownik.imie + ' ' + uzytkownik.nazwisko + ' nie został usunięty!');
+              Notyfikacje.powiadomienie('Pracownik ' + uzytkownik.name + ' nie został usunięty!');
             }
           }, function() {
             Notyfikacje.zamknij();
-            Notyfikacje.powiadomienie('Pracownik ' + uzytkownik.imie + ' ' + uzytkownik.nazwisko + ' nie został usunięty!');
+            Notyfikacje.powiadomienie('Pracownik ' + uzytkownik.name + ' nie został usunięty!');
           });
     };
 
-    this.$onDestroy = function() {
+    this.$onDestroy = () => {
       clearTimeout(timeout);
       timeout = null;
     };

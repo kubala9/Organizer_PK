@@ -15,15 +15,12 @@ class ObslugaProjektu {
     let wczytaj = () => {
       self.projekty = Projekt.pobierz(this.archiwum);
       $scope.$applyAsync();
-      timeout = setTimeout(wczytaj, 5000);
+      timeout = setTimeout(wczytaj, 1000);
     };
     wczytaj();
 
-<<<<<<< HEAD
+
     //dodawanie/edytowanie projektu
-=======
-    //dodawanie/edytowanie produków
->>>>>>> 27898d5068f6ffa898e39ea80778cb090ce13e7b
     let modyfikowanie = ($scope, $mdDialog, projekt, klienci) => {
       $scope.klienci = klienci;
 
@@ -69,7 +66,13 @@ class ObslugaProjektu {
       };
     };
 
-    this.aktywnyProjekt = $rootScope.aktywnyProjekt || self.projekty[0].id;
+    this.aktywnyProjekt = null;
+    if (!isNaN($rootScope.aktywnyProjekt)) {
+      this.aktywnyProjekt = $rootScope.aktywnyProjekt;
+    } else if (self.projekty.length !== 0) {
+      $rootScope.aktywnyProjekt = self.projekty[0].id;
+      this.aktywnyProjekt = self.projekty[0].id;
+    }
 
     this.ustawProjekt = projekt => {
       self.aktywnyProjekt = projekt.id;
@@ -98,6 +101,10 @@ class ObslugaProjektu {
     this.usun = projekt => {
       Notyfikacje.potwierdzenie('Czy chcesz usunąć ten projekt?', 'Tak', 'Nie')
           .then(function() {
+            if (projekt.id === self.aktywnyProjekt) {
+              self.aktywnyProjekt = null;
+              $rootScope.aktywnyProjekt = null;
+            }
             if (Projekt.usun(projekt)) {
               Notyfikacje.zamknij();
               Notyfikacje.powiadomienie('Projekt został usunięty!');

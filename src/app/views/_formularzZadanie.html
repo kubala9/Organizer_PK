@@ -43,7 +43,7 @@
                             <label>Przydzielony pracownik</label>
                             <md-select ng-model="zadanie.pracownik" required>
                                 <md-option ng-repeat="item in uzytkownicy" ng-value="item.id">
-                                    {{ item.imie }} {{ item.nazwisko }}
+                                    {{ item.name }}
                                 </md-option>
                             </md-select>
                         </md-input-container>

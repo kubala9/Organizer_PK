@@ -16,7 +16,6 @@ class ObslugaKlienta {
     wczytaj();
 
     let modyfikowanie = ($scope, Notyfikacje, klient) => {
-      console.log(klient);
       if (typeof klient !== "undefined") {
         $scope.klient = Object.assign({}, klient);
       } else {

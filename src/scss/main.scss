@@ -60,3 +60,6 @@ md-dialog md-dialog-content md-toolbar h2 {color: #FFF;}
 md-tooltip {font-size: 12px;}
 
 .active {background: rgba(0, 0, 0, 0.1);}
+
+.warning {padding: 15px; background: rgba(0, 50, 50, 0.1); line-height: 20px; margin: 10px 0;}
+.warning ng-md-icon {position: relative; top: 3px;}

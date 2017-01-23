@@ -33,6 +33,7 @@ import {obslugaprojektu} from './app/controllers/ObslugaProjektu';
 import Projekt from './app/services/Projekt';
 
 import {obslugazadan} from './app/controllers/ObslugaZadan';
+import {obslugamoichzadan} from './app/controllers/ObslugaMoichZadan';
 import Zadania from './app/services/Zadania';
 
 import {obsluganotatek} from './app/controllers/ObslugaNotatek';
@@ -59,17 +60,12 @@ var app = angular
     .component('obslugaKlienta', obslugaklienta)
     .service('Klient', Klient)
 
-<<<<<<< HEAD
-=======
-    .component('obslugaKlienta', obslugaklienta)
-    .service('Klient', Klient)
-
->>>>>>> 27898d5068f6ffa898e39ea80778cb090ce13e7b
     .component('obslugaProjektow', obslugaprojektow)
     .component('obslugaProjektu', obslugaprojektu)
     .service('Projekt', Projekt)
 
     .component('obslugaZadan', obslugazadan)
+    .component('obslugaMoichZadan', obslugamoichzadan)
     .service('Zadania', Zadania)
 
     .component('obslugaNotatek', obsluganotatek)

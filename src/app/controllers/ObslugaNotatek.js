@@ -12,15 +12,14 @@ class ObslugaNotatek {
 
         let wczytaj = () => {
             self.lista = Notatki.pobierz();
-          //  console.log(Notatki.pobierz());
+
             $scope.$applyAsync();
-            timeout = setTimeout(wczytaj, 5000);
+            timeout = setTimeout(wczytaj, 1000);
         };
         wczytaj();
       
         
         let modyfikowanie = ($scope, $mdDialog, notatki) => {
-
             if (typeof notatki !== "undefined") {
                 $scope.notatki = Object.assign({}, notatki);
                 $scope.notatki.data = new Date($scope.notatki.data);
@@ -28,10 +27,9 @@ class ObslugaNotatek {
                 $scope.today = new Date();
 
                 $scope.notatki = {
-                     id: null,
+                    id: null,
                     tytul:'',
-                    tresc: '',
-                    data: $scope.today
+                    tresc: ''
                 };
             }
 
@@ -45,18 +43,18 @@ class ObslugaNotatek {
                 if (notatki.id) {
                     if (Notatki.edytuj(notatki)) {
                         Notyfikacje.zamknij();
-                        Notyfikacje.powiadomienie(notatki.tytul + ' został zapisana!');
+                        Notyfikacje.powiadomienie(notatki.tytul + ' została zapisana!');
                     } else {
                         Notyfikacje.zamknij();
-                        Notyfikacje.powiadomienie(notatki.tytul + ' nie został zapisana');
+                        Notyfikacje.powiadomienie(notatki.tytul + ' nie została zapisana');
                     }
                 } else {
                     if (Notatki.nowy(notatki)) {
                         Notyfikacje.zamknij();
-                        Notyfikacje.powiadomienie(notatki.tytul + ' został dodana!');
+                        Notyfikacje.powiadomienie(notatki.tytul + ' została dodana!');
                     } else {
                         Notyfikacje.zamknij();
-                        Notyfikacje.powiadomienie(notatki.tytul + ' nie został dodana!');
+                        Notyfikacje.powiadomienie(notatki.tytul + ' nie została dodana!');
                     }
                 }
             };
@@ -70,20 +68,20 @@ class ObslugaNotatek {
             });
         };
 
-        //usuwanie notatkiow
+        //usuwanie notatek
         this.usun = notatki => {
-            Notyfikacje.potwierdzenie('Czy chcesz usunąć te notatki?', 'Tak', 'Nie')
+            Notyfikacje.potwierdzenie('Czy chcesz usunąć tą notatkę?', 'Tak', 'Nie')
                 .then(function() {
                     if (Notatki.usun(notatki)) {
                         Notyfikacje.zamknij();
-                        Notyfikacje.powiadomienie('Notatka zostało usunięta!');
+                        Notyfikacje.powiadomienie('Notatka została usunięta!');
                     } else {
                         Notyfikacje.zamknij();
-                        Notyfikacje.powiadomienie('Notatka nie zostało usunięta!');
+                        Notyfikacje.powiadomienie('Notatka nie została usunięta!');
                     }
                 }, function() {
                     Notyfikacje.zamknij();
-                    Notyfikacje.powiadomienie('Notatka nie zostało usunięta!');
+                    Notyfikacje.powiadomienie('Notatka nie została usunięta!');
                 });
         };
 

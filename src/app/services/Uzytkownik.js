@@ -4,28 +4,11 @@ class Uzytkownik {
     constructor($localStorage, $rootScope) {
         "ngInject";
 
-        this.listauzytkownikow = [/*{
-        login: 'dami95',
-        haslo: '123123',
-        imie: 'Damian',
-        nazwisko: 'Lewita',
-        email: 'boss@sggw.pl',
-        telefon: '791555333',
-        dane: 'Front-End Developer Webankieta'
-    },
-                      {
-        login: 'kubala',
-        haslo: '123123',
-        imie: 'Jakub',
-        nazwisko: 'Michniewski',
-        email: 'kuba@sggw.pl',
-        telefon: '721888999',
-        dane: 'Junior Front-End Developer'
-    }*/];
+        this.listauzytkownikow = [];
+
         this.wczytaj = function wczytaj() {
             if (angular.isDefined($localStorage.uzytkownik)) {
-                 var id = $rootScope.zalogowany.id;
-                this.listauzytkownikow = $localStorage.uzytkownik.filter(el => el.id_user === id);
+                this.listauzytkownikow = $localStorage.uzytkownik;
             }
         };
 
@@ -36,25 +19,37 @@ class Uzytkownik {
         };
 
         this.wczytaj();
+
+        this.nowy = (uzytkownik, manager) => {
+            if (this.listauzytkownikow.length === 0) {
+                uzytkownik.id = 1;
+            } else {
+                uzytkownik.id = this.listauzytkownikow[this.listauzytkownikow.length - 1].id + 1;
+            }
+            if (!angular.isDefined(manager)) {
+                uzytkownik.id_manager = $rootScope.zalogowany.id;
+            }
+
+            this.listauzytkownikow.push(uzytkownik);
+            this.zapisz();
+
+            return true;
+        };
+
+        this.pobierz = () => {
+            this.wczytaj();
+
+            return this.listauzytkownikow.filter(item => {
+                return angular.isDefined(item.id_manager) && item.id_manager === $rootScope.zalogowany.id;
+            });
+        };
     }
 
 
 
-    nowy(uzytkownik) {
-        if (this.listauzytkownikow.length === 0) {
-            uzytkownik.id = 1;
-        } else {
-            uzytkownik.id = this.listauzytkownikow[this.listauzytkownikow.length - 1].id + 1;
-        }
-
-        this.listauzytkownikow.push(uzytkownik);
-        this.zapisz();
-
-        return true;
-    }
-
-    pobierz() {
+    pobierzWszystkich() {
         this.wczytaj();
+
         return this.listauzytkownikow;
     }
 
@@ -81,12 +76,6 @@ class Uzytkownik {
         this.zapisz();
 
         return true;
-    }
-
-    getUzytkownik(id) {
-        var i = this.listauzytkownikow.filter(element => element.id === id)[0];
-
-        return this.listauzytkownikow[i];
     }
 }
 

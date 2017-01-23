@@ -2,20 +2,75 @@
     <md-dialog-content>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>Dodaj pracownika</h2>
+                <h2 ng-show="!uzytkownik.id">Dodaj pracownika</h2>
+                <h2 ng-show="uzytkownik.id">{{uzytkownik.name}}</h2>
             </div>
         </md-toolbar>
 
         <form name="modyfikacjaPracownik">
             <md-content layout-gt-sm="column" layout-padding>
-             <md-input-container>
-                        <label>Pracownik</label>
-                        <md-select ng-model="uzytkownik.id_manager" required>
-                            <md-option ng-repeat="uzytkownik in uzytkownicy" ng-value="{{uzytkownik.id}}">
-                               {{ uzytkownik.imie }} {{ uzytkownik.nazwisko }}
-                            </md-option>
-                        </md-select>
+                <div>
+                    <md-input-container>
+                        <label>Imię i nazwisko</label>
+                        <input name="imie"  ng-model="uzytkownik.name" type="text" required />
+                        <div ng-messages="modyfikacjaPracownik.imie.$error" multiple md-auto-hide="true">
+                            <div ng-message="required">
+                                Wpisz imię i nazwisko pracownika!
+                            </div>
+                        </div>
+                    </md-input-container>                
+                </div>
+                <div>
+                    <md-input-container>
+                        <label>Login</label>
+                        <input name="login"  ng-model="uzytkownik.login" type="text" required />
+                        <div ng-messages="signupUzytkownik.login.$error" multiple md-auto-hide="true">
+                            <div ng-message="required">
+                                Wpisz poprawny login!
+                            </div>
+                        </div>
                     </md-input-container>
+                    
+                    <md-input-container>
+                        <label>Hasło</label>
+                        <input name="haslo" ng-model="uzytkownik.haslo" type="password" required minlength="6" />
+
+                        <div ng-messages="signupUzytkownik.haslo.$error" multiple md-auto-hide="true">
+                            <div ng-message-exp="['required', 'minlength']">
+                                Wpisz przynajmniej 6 znaków!
+                            </div>
+                        </div>
+                    </md-input-container>
+                    
+                </div>
+                <div>
+                   <md-input-container>
+                        <label>Email</label>
+                        <input name="email"  ng-model="uzytkownik.email" type="text" required pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
+                        <div ng-messages="modyfikacjaPracownik.email.$error">
+                            <div ng-message-exp="['required', 'pattern']">
+                                Wpisz poprawny adres email!
+                            </div>
+                        </div>
+                    </md-input-container>
+                    
+                    <md-input-container>
+                        <label>Nr telefonu</label>
+                        <input name="telefon"  ng-model="uzytkownik.telefon" type="text" required pattern="^[0-9]{8,10}$"/>
+                        <div ng-messages="modyfikacjaPracownik.telefon.$error" multiple md-auto-hide="true">
+                            <div ng-message="required">
+                                Wpisz poprawny numer telefonu!
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                
+                <div>
+                    <md-input-container>
+                        <label>Notatka</label>
+                        <textarea name="notatka" ng-model="uzytkownik.dane"></textarea>
+                    </md-input-container>
+                </div>
             </md-content>
         </form>
     </md-dialog-content>

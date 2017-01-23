@@ -3,14 +3,17 @@
 </h2>
 
 <md-content>
+    <div class="warning" ng-show="$ctrl.lista.length == 0">
+        <ng-md-icon icon="info" style="fill: grey; display: inline-block;" size="20"></ng-md-icon> Brak notatek
+    </div>
+
     <md-list>
         <md-list-item ng-repeat="notatki in $ctrl.lista" class="md-3-line" ng-click="$ctrl.modyfikacja(notatki)">
 
             <div class="md-list-item-text">
-                <h3>{{notatki.tytul}}</h3>
-                <p> {{ notatki.tresc }}</p>
+                <h3><strong>{{notatki.tytul}}</strong></h3>
+
                 <p>Dodano: {{ notatki.data | date:'dd-MM-yyyy HH:mm' }}</p>
-                
             </div>
 
             <md-button class="md-secondary md-icon-button" ng-click="$ctrl.modyfikacja(notatki)">

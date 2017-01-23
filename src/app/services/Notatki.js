@@ -5,11 +5,11 @@ class Notatki {
         "ngInject";
 
         this.listanotatek = [];
- 
+        this.id = $rootScope.zalogowany.id;
+
         this.wczytaj = function wczytaj() {
-            if (angular.isDefined($localStorage.notatki)) {              
-             var id = $rootScope.zalogowany.id;
-                this.listanotatek = $localStorage.notatki.filter(el => el.id_user === id);
+            if (angular.isDefined($localStorage.notatki)) {
+                this.listanotatek = $localStorage.notatki;
             }
         };
 
@@ -20,17 +20,6 @@ class Notatki {
         };
 
         this.wczytaj();
-
-        //@TODO defaultowe dane do firstRun
-    }
-
-    getPusty() {
-        return {
-            id: null,
-            tytul:'',
-            tresc: '',
-            data: ''
-        };
     }
 
     nowy(notatki) {
@@ -40,7 +29,9 @@ class Notatki {
             notatki.id = this.listanotatek[this.listanotatek.length - 1].id + 1;
         }
 
+        notatki.id_user = this.id;
         notatki.data = new Date().getTime();
+
         this.listanotatek.push(notatki);
         this.zapisz();
 
@@ -49,7 +40,7 @@ class Notatki {
 
     pobierz() {
         this.wczytaj();
-        return this.listanotatek;
+        return this.listanotatek.filter(el => el.id_user === this.id);
     }
 
     edytuj(notatki) {

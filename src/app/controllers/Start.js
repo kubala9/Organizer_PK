@@ -5,7 +5,7 @@ class Start {
   constructor($rootScope, $scope, $state, Notyfikacje, Uzytkownik) {
     "ngInject";
 
-    this.uzytkownik = Uzytkownik.pobierz();
+    this.uzytkownik = Uzytkownik.pobierzWszystkich();
 
     $scope.logujUzytkownik = {
       login: '',
@@ -16,35 +16,34 @@ class Start {
       var haslo = $scope.logujUzytkownik.haslo;
 
       var user = this.uzytkownik.filter(item => item.login === login && item.haslo === haslo);
+      console.log(user[0]);
 
       if (user.length === 1) {
+        Notyfikacje.powiadomienie('Zalogowałeś się.');
+
         $rootScope.zalogowany = user[0];
         $rootScope.zalogowany.uzytkownik = 1;
-<<<<<<< HEAD
 
-        Notyfikacje.powiadomienie('Zalogowałeś się.');
-=======
+        if (user[0].id_manager === null) {
+          $rootScope.zalogowany.manager = 1;
+          $state.go('organizer.projekt');
+        } else {
+          $rootScope.zalogowany.manager = 0;
+          $state.go('organizer.moje-zadania');
+        }
 
-        Notyfikacje.powiadomienie('Zalogowałeś się.');
-
-        $state.go('organizer.uzytkownik');
       } else {
         Notyfikacje.powiadomienie('Błąd logowania.');
       }
     };
->>>>>>> 27898d5068f6ffa898e39ea80778cb090ce13e7b
 
-        $state.go('organizer.uzytkownik');
-      } else {
-        Notyfikacje.powiadomienie('Błąd logowania.');
-      }
-    };
       
     var rejestrujUzytkownik = {
       name: '',
       email: '',
       login: '',
-      haslo: ''
+      haslo: '',
+      id_manager: null
     };
     $scope.rejestrujUzytkownik = angular.copy(rejestrujUzytkownik);
     this.rejestrujJakoUzytkownik = () => {
@@ -55,7 +54,7 @@ class Start {
         Notyfikacje.powiadomienie('Użytkownik o takim loginie już istnieje');
       } else {
 
-        if (Uzytkownik.nowy($scope.rejestrujUzytkownik)) {
+        if (Uzytkownik.nowy($scope.rejestrujUzytkownik, 1)) {
           $scope.logujUzytkownik.login = $scope.rejestrujUzytkownik.login;
           $scope.rejestrujUzytkownik = rejestrujUzytkownik;
           $scope.signupUzytkownik.$setPristine();
@@ -65,9 +64,8 @@ class Start {
         }
       }
     };
-      
   }
-}
+  }
 
 export const start = {
   template: tpl,

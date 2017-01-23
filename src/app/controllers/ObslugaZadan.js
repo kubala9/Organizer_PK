@@ -1,3 +1,4 @@
+import angular from 'angular';
 import tpl from '../views/ObslugaZadan.html';
 import form from '../views/_formularzZadanie.html';
 
@@ -8,30 +9,40 @@ class ObslugaZadan {
         var self = this;
         this.zadania = [];
         this.uzytkownicy = Uzytkownik.pobierz();
+        this.uzytkownicy.push({id: $rootScope.zalogowany.id, name: $rootScope.zalogowany.name+' [Ty]'});
 
         var timeout = null;  
 
         let wczytaj = () => {
-            self.zadania = Zadania.pobierz($rootScope.aktywnyProjekt);
-            $scope.$applyAsync();
-            timeout = setTimeout(wczytaj, 5000);
+            if (angular.isDefined(self.aktywnyProjekt)) {
+                self.zadania = Zadania.pobierz(self.aktywnyProjekt);
+                $scope.$applyAsync();
+                timeout = setTimeout(wczytaj, 1000);
+            }
         };
         wczytaj();
 
         $rootScope.$watch('aktywnyProjekt', () => {
             clearTimeout(timeout);
             timeout = null;
+            self.aktywnyProjekt = $rootScope.aktywnyProjekt;
             wczytaj();
         }, true);
 
         this.getPracownik = id => {
             var pracownik = this.uzytkownicy.filter(i => i.id === id)[0];
-            return pracownik.imie + pracownik.nazwisko;
+            return pracownik.name;
         };
 
         this.zakonczZadanie = zadanie => {
-            zadanie.zrealizowane = 1;
-            //  @TODO...
+            if (Zadania.zrealizuj(zadanie.id)) {
+                zadanie.zrealizowane = 1;
+                Notyfikacje.zamknij();
+                Notyfikacje.powiadomienie('Zadanie zostało zapisane jako zrealizowane!');
+            } else {
+                Notyfikacje.zamknij();
+                Notyfikacje.powiadomienie('Akcja nie została zapisana!');
+            }
         };
 
 
@@ -92,11 +103,7 @@ class ObslugaZadan {
             });
         };
 
-<<<<<<< HEAD
         //usuwanie zadan
-=======
-        //usuwanie zadanieow
->>>>>>> 27898d5068f6ffa898e39ea80778cb090ce13e7b
         this.usun = zadanie => {
             Notyfikacje.potwierdzenie('Czy chcesz usunąć te zadanie?', 'Tak', 'Nie')
                 .then(function() {

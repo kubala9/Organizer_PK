@@ -1,69 +1,57 @@
 import angular from 'angular';
 
 class App {
-  constructor($rootScope, Uzytkownik, $localStorage, $state) {
-      //constructor($rootScope, Uzytkownik, Klient, Projekt, $localStorage, $state) {
-    "ngInject";
+  constructor($rootScope, $localStorage, $state, Uzytkownik) {
+      "ngInject";
 
-
-    this.uzytkownik = Uzytkownik.pobierz();
-
-      $rootScope.zalogowany = this.uzytkownik[0];
+      $rootScope.zalogowany = Uzytkownik.pobierzWszystkich()[0];
+      $rootScope.zalogowany.manager = 1;
       $rootScope.zalogowany.uzytkownik = 1;
+
       $state.go('organizer.projekt');
 
-    if (!angular.isArray($localStorage.uzytkownik)) {
-<<<<<<< HEAD
-     // this.firstInitUzytkownik();
-    }
+      if (!angular.isArray($localStorage.uzytkownik)) {
+          $localStorage.uzytkownik = [
+              {
+                  id: 1,
+                  login: 'dami95',
+                  haslo: '123123',
+                  name: 'Damian Lewita',
+                  email: 'boss@sggw.pl',
+                  telefon: '791555333',
+                  dane: 'Front-End Developer Webankieta'
+              }
+          ];
+      }
 
-    if (!angular.isArray($localStorage.klient)) {
-     // this.Klient = Klient;
-     // this.firstInitKlient();
-=======
-      //this.firstInitUzytkownik();
-    }
-
-    if (!angular.isArray($localStorage.klient)) {
-    //  this.Klient = Klient;
-      //this.firstInitKlient();
->>>>>>> 27898d5068f6ffa898e39ea80778cb090ce13e7b
-    }
+      if (!angular.isArray($localStorage.klient)) {
+          //  this.Klient = Klient;
+            //this.firstInitKlient();
+      }
 
   }
 
 
   firstInitUzytkownik() {
-    let uzytkownik1 = {
-        login: 'dami95',
-        haslo: '123123',
-        imie: 'Damian',
-        nazwisko: 'Lewita',
-        email: 'boss@sggw.pl',
-        telefon: '791555333',
-        dane: 'Front-End Developer Webankieta'
-    };
-      
     let uzytkownik2 = {
         login: 'kubala',
         haslo: '123123',
-        imie: 'Jakub',
-        nazwisko: 'Michniewski',
+        name: 'Jakub Michniewski',
         email: 'kuba@sggw.pl',
         telefon: '721888999',
-        dane: 'Junior Front-End Developer'
+        dane: 'Junior Front-End Developer',
+        id_manager: 2
     };
       
       let uzytkownik3 = {
         login: 'kompomaster',
         haslo: '123123',
-        imie: 'Maciej',
-        nazwisko: 'Janowicz',
+        name: 'Maciej Janowicz',
         email: 'komponent@poczta.pl',
         telefon: '781222333',
-        dane: 'SGGW Master of Component Programming'
+        dane: 'SGGW Master of Component Programming',
+        id_manager: 4
     };
-    this.Uzytkownik.nowy(uzytkownik1);
     this.Uzytkownik.nowy(uzytkownik2);
     this.Uzytkownik.nowy(uzytkownik3);
   }

@@ -2,12 +2,21 @@
     <span>Zarządzanie pracownikami</span>
 </h2>
 <md-content>
+    <div class="warning" ng-show="$ctrl.uzytkownicy.length == 0">
+        <ng-md-icon icon="info" style="fill: grey; display: inline-block;" size="20"></ng-md-icon> Brak pracowników!
+    </div>
+
     <md-list>
         <md-list-item ng-repeat="uzytkownik in $ctrl.uzytkownicy" class="md-3-line" ng-click="$ctrl.modyfikacja(uzytkownik)">
             <div class="md-list-item-text">
-                <h3>{{ uzytkownik.imie }} {{ uzytkownik.nazwisko }}</h3>
-                <h4>{{ uzytkownik.email }}</h4>
+                <h3><strong>{{ uzytkownik.name }} </strong></h3>
+                <h4>E-mail: {{ uzytkownik.email }}</h4>
+                <h4>Telefon: {{ uzytkownik.telefon }}</h4>
             </div>
+
+            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.lista(uzytkownik)">
+                <ng-md-icon  icon="list" style="fill: grey;" size="30"></ng-md-icon>
+            </md-button>
 
             <md-button class="md-secondary md-icon-button" ng-click="$ctrl.modyfikacja(uzytkownik)">
                 <ng-md-icon  icon="mode_edit" style="fill: grey;" size="30"></ng-md-icon>

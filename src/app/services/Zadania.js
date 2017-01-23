@@ -20,8 +20,6 @@ class Zadania {
         };
 
         this.wczytaj();
-
-        //@TODO defaultowe dane do firstRun
     }
 
     nowy(zadanie) {
@@ -31,8 +29,8 @@ class Zadania {
             zadanie.id = this.lista[this.lista.length - 1].id + 1;
         }
         zadanie.id_user = this.id;
-
         zadanie.data = new Date().getTime();
+
         this.lista.push(zadanie);
         this.zapisz();
 
@@ -43,6 +41,12 @@ class Zadania {
         this.wczytaj();
 
         return this.lista.filter(item => item.id_user === this.id && item.id_projekt === idProjekt);
+    }
+
+    pobierzPerPracownik(id) {
+        this.wczytaj();
+
+        return this.lista.filter(item => item.pracownik === id);
     }
 
     edytuj(zadanie) {
@@ -73,12 +77,13 @@ class Zadania {
 
     zrealizuj(id) {
         var i = this.lista.findIndex((element, index, array) => element.id === id);
-        console.log(i);
+
         if (i === -1) {
             return false;
         }
 
         this.lista[i].zrealizowane = 1;
+        this.lista[i].realizacja = new Date();
         this.zapisz();
 
         return true;

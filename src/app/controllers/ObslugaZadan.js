@@ -92,7 +92,11 @@ class ObslugaZadan {
             });
         };
 
+<<<<<<< HEAD
+        //usuwanie zadan
+=======
         //usuwanie zadanieow
+>>>>>>> 27898d5068f6ffa898e39ea80778cb090ce13e7b
         this.usun = zadanie => {
             Notyfikacje.potwierdzenie('Czy chcesz usunąć te zadanie?', 'Tak', 'Nie')
                 .then(function() {

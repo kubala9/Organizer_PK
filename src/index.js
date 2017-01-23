@@ -41,6 +41,9 @@ import Notatki from './app/services/Notatki';
 var app = angular
   .module('organizer', ['ui.router', 'ngMaterial', 'ngMdIcons', 'ngMessages', 'ngStorage'])
   .config(routesConfig)
+    .config(function($compileProvider) {
+    $compileProvider.preAssignBindingsEnabled(true);
+  })
   .component('organizer', main)
   .component('organizerHeader', header)
   .component('organizerMenu', menu)
@@ -52,10 +55,16 @@ var app = angular
 
     .component('obslugaUzytkownika', obslugauzytkownika)
     .service('Uzytkownik', Uzytkownik)
-
+ 
     .component('obslugaKlienta', obslugaklienta)
     .service('Klient', Klient)
 
+<<<<<<< HEAD
+=======
+    .component('obslugaKlienta', obslugaklienta)
+    .service('Klient', Klient)
+
+>>>>>>> 27898d5068f6ffa898e39ea80778cb090ce13e7b
     .component('obslugaProjektow', obslugaprojektow)
     .component('obslugaProjektu', obslugaprojektu)
     .service('Projekt', Projekt)

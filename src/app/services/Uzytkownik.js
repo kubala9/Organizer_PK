@@ -1,19 +1,37 @@
 import angular from 'angular';
 
 class Uzytkownik {
-    constructor($localStorage) {
+    constructor($localStorage, $rootScope) {
         "ngInject";
 
-        this.lista = [];
+        this.listauzytkownikow = [/*{
+        login: 'dami95',
+        haslo: '123123',
+        imie: 'Damian',
+        nazwisko: 'Lewita',
+        email: 'boss@sggw.pl',
+        telefon: '791555333',
+        dane: 'Front-End Developer Webankieta'
+    },
+                      {
+        login: 'kubala',
+        haslo: '123123',
+        imie: 'Jakub',
+        nazwisko: 'Michniewski',
+        email: 'kuba@sggw.pl',
+        telefon: '721888999',
+        dane: 'Junior Front-End Developer'
+    }*/];
         this.wczytaj = function wczytaj() {
             if (angular.isDefined($localStorage.uzytkownik)) {
-                this.lista = $localStorage.uzytkownik;
+                 var id = $rootScope.zalogowany.id;
+                this.listauzytkownikow = $localStorage.uzytkownik.filter(el => el.id_user === id);
             }
         };
 
         this.zapisz = function zapisz() {
-            if (angular.isArray(this.lista)) {
-                $localStorage.uzytkownik = this.lista;
+            if (angular.isArray(this.listauzytkownikow)) {
+                $localStorage.uzytkownik = this.listauzytkownikow;
             }
         };
 
@@ -23,13 +41,13 @@ class Uzytkownik {
 
 
     nowy(uzytkownik) {
-        if (this.lista.length === 0) {
+        if (this.listauzytkownikow.length === 0) {
             uzytkownik.id = 1;
         } else {
-            uzytkownik.id = this.lista[this.lista.length - 1].id + 1;
+            uzytkownik.id = this.listauzytkownikow[this.listauzytkownikow.length - 1].id + 1;
         }
 
-        this.lista.push(uzytkownik);
+        this.listauzytkownikow.push(uzytkownik);
         this.zapisz();
 
         return true;
@@ -37,38 +55,38 @@ class Uzytkownik {
 
     pobierz() {
         this.wczytaj();
-        return this.lista;
+        return this.listauzytkownikow;
     }
 
     edytuj(uzytkownik) {
-        var i = this.lista.findIndex((element, index, array) => element.id === uzytkownik.id);
+        var i = this.listauzytkownikow.findIndex((element, index, array) => element.id === uzytkownik.id);
 
         if (i === -1) {
             return false;
         }
 
-        this.lista[i] = uzytkownik;
+        this.listauzytkownikow[i] = uzytkownik;
         this.zapisz();
 
         return true;
     }
 
     usun(uzytkownik) {
-        var i = this.lista.indexOf(uzytkownik);
+        var i = this.listauzytkownikow.indexOf(uzytkownik);
         if (i === -1) {
             return false;
         }
 
-        this.lista.splice(i, 1);
+        this.listauzytkownikow.splice(i, 1);
         this.zapisz();
 
         return true;
     }
 
     getUzytkownik(id) {
-        var i = this.lista.filter(element => element.id === id)[0];
+        var i = this.listauzytkownikow.filter(element => element.id === id)[0];
 
-        return this.lista[i];
+        return this.listauzytkownikow[i];
     }
 }
 

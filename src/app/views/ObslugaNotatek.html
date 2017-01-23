@@ -1,40 +1,29 @@
 <h2>
-    <span>Obsługa Sprzedaży</span>
+    <span>Notatki</span>
 </h2>
-
-<md-input-container>
-    <md-checkbox ng-model="niezrealizowane" aria-label="Zrealizowane" ng-true-value="1" ng-false-value="0">
-        Wyświetl tylko niezrealizowane
-    </md-checkbox>
-</md-input-container>
 
 <md-content>
     <md-list>
-        <md-list-item ng-repeat="sprzedaz in $ctrl.sprzedaz | filter: filtrujZrealizowane" class="md-3-line" ng-click="$ctrl.modyfikacja(sprzedaz)">
+        <md-list-item ng-repeat="notatki in $ctrl.lista" class="md-3-line" ng-click="$ctrl.modyfikacja(notatki)">
 
             <div class="md-list-item-text">
-                <h3>Sprzedaż nr {{ sprzedaz.id }}</h3>
-                <p>Data: {{ sprzedaz.data | date:'dd-MM-yyyy HH:mm' }}</p>
-                <p>Klient: {{ $ctrl.getKlient(sprzedaz.kupujacy) }}</p>
+                <h3>{{notatki.tytul}}</h3>
+                <p> {{ notatki.tresc }}</p>
+                <p>Dodano: {{ notatki.data | date:'dd-MM-yyyy HH:mm' }}</p>
+                
             </div>
 
-            <ng-md-icon ng-show="sprzedaz.zrealizowane"  icon="check" style="fill: grey;" size="30"></ng-md-icon>
-
-            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.zrealizuj(sprzedaz.id)" ng-show="!sprzedaz.zrealizowane">
-                <ng-md-icon  icon="hourglass_empty" style="fill: grey;" size="30"></ng-md-icon>
-            </md-button>
-
-            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.modyfikacja(sprzedaz)">
+            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.modyfikacja(notatki)">
                 <ng-md-icon  icon="mode_edit" style="fill: grey;" size="30"></ng-md-icon>
             </md-button>
 
-            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.usun(sprzedaz)">
+            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.usun(notatki)">
                 <ng-md-icon icon="delete" style="fill: grey;" size="30"></ng-md-icon>
             </md-button>
         </md-list-item>
     </md-list>
 
     <md-button class="md-raised md-primary" ng-click="$ctrl.modyfikacja()">
-        Dodaj nową sprzedaż
+        Dodaj notatkę
     </md-button>
 </md-content>

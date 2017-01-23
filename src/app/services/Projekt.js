@@ -4,6 +4,22 @@ class Projekt {
     constructor($localStorage, $rootScope) {
         "ngInject";
 
+
+        this.listaprojektow = [{
+          nazwa: 'prodzekt',
+          opis: 'trzeba zdazyc',
+          klient: 1,
+          archiwum: 0,
+          termin: null
+        },
+                              {
+          nazwa: 'progsdkt',
+          opis: 'tsddazyc',
+          klient: 1,
+          archiwum: 0,
+          termin: null
+        }];
+
         this.listaprojektow = [];
         this.id = $rootScope.zalogowany.id;
         this.wczytaj = () => {
@@ -19,7 +35,6 @@ class Projekt {
         };
 
         this.wczytaj();
-    }
 
     pobierz(archiwum) {
         this.wczytaj();
@@ -76,6 +91,17 @@ class Projekt {
 
         return true;
     }
+
+    getProjekt(id) {
+        var i = this.listaprojektow.findIndex((element, index, array) => element.id === id);
+        if (i === -1) {
+            return false;
+        }
+
+        return this.listaprojektow[i];
+    }
+
+
 }
 
 export default Projekt;

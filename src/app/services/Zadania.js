@@ -20,6 +20,8 @@ class Zadania {
         };
 
         this.wczytaj();
+
+        //@TODO defaultowe dane do firstRun
     }
 
     nowy(zadanie) {

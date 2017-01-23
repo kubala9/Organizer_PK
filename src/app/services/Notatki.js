@@ -1,20 +1,21 @@
 import angular from 'angular';
 
 class Notatki {
-    constructor($localStorage) {
+    constructor($localStorage, $rootScope) {
         "ngInject";
 
-        this.lista = [];
-
+        this.listanotatek = [];
+ 
         this.wczytaj = function wczytaj() {
-            if (angular.isDefined($localStorage.notatki)) {
-                this.lista = $localStorage.notatki;
+            if (angular.isDefined($localStorage.notatki)) {              
+             var id = $rootScope.zalogowany.id;
+                this.listanotatek = $localStorage.notatki.filter(el => el.id_user === id);
             }
         };
 
         this.zapisz = function zapisz() {
-            if (angular.isArray(this.lista)) {
-                $localStorage.notatki = this.lista;
+            if (angular.isArray(this.listanotatek)) {
+                $localStorage.notatki = this.listanotatek;
             }
         };
 
@@ -26,20 +27,21 @@ class Notatki {
     getPusty() {
         return {
             id: null,
-            id_projektu: null,
-            tresc: ''
+            tytul:'',
+            tresc: '',
+            data: ''
         };
     }
 
     nowy(notatki) {
-        if (this.lista.length === 0) {
+        if (this.listanotatek.length === 0) {
             notatki.id = 1;
         } else {
-            notatki.id = this.lista[this.lista.length - 1].id + 1;
+            notatki.id = this.listanotatek[this.listanotatek.length - 1].id + 1;
         }
 
         notatki.data = new Date().getTime();
-        this.lista.push(notatki);
+        this.listanotatek.push(notatki);
         this.zapisz();
 
         return true;
@@ -47,31 +49,30 @@ class Notatki {
 
     pobierz() {
         this.wczytaj();
-
-        return this.lista;
+        return this.listanotatek;
     }
 
     edytuj(notatki) {
-        var i = this.lista.findIndex((element, index, array) => element.id === notatki.id);
+        var i = this.listanotatek.findIndex((element, index, array) => element.id === notatki.id);
 
         if (i === -1) {
             return false;
         }
 
         notatki.data = new Date().getTime();
-        this.lista[i] = notatki;
+        this.listanotatek[i] = notatki;
         this.zapisz();
 
         return true;
     }
 
     usun(notatki) {
-        var i = this.lista.indexOf(notatki);
+        var i = this.listanotatek.indexOf(notatki);
         if (i === -1) {
             return false;
         }
 
-        this.lista.splice(i, 1);
+        this.listanotatek.splice(i, 1);
         this.zapisz();
 
         return true;

@@ -1,8 +1,12 @@
 import angular from 'angular';
 
 class App {
-  constructor() {
+  constructor($rootScope, $state) {
       "ngInject";
+
+      if (!$rootScope.zalogowany || !$rootScope.zalogowany.id) {
+          $state.go('organizer.start');
+      }
   }
 }
 

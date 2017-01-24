@@ -9,11 +9,11 @@
         </div>
 
         <md-list>
-            <md-list-item ng-repeat="zadanie in $ctrl.zadania | orderBy: '-termin'" class="md-3-line">
+            <md-list-item ng-repeat="zadanie in $ctrl.zadania | orderBy: 'termin'" class="md-3-line" ng-click="$ctrl.modyfikacja(zadanie)" ng-class="$ctrl.bgPriority(zadanie)">
                 <div class="md-list-item-text">
                     <h3><strong>{{ zadanie.nazwa }}</strong></h3>
 
-                    <h4 ng-show="zadanie.termin">Termin wykonania: {{ zadanie.termin | date: 'dd.MM.yyyy' }}</h4>
+                    <h4 ng-show="zadanie.termin">Deadline: {{ zadanie.termin | date: 'dd.MM.yyyy' }}</h4>
                     <h4 ng-show="zadanie.realizacja">Data wykonania: {{ zadanie.realizacja | date: 'dd.MM.yyyy' }}</h4>
 
                     <h4>Pracownik: {{ $ctrl.getPracownik(zadanie.pracownik) }}</h4>

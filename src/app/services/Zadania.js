@@ -88,6 +88,28 @@ class Zadania {
 
         return true;
     }
+
+    getColor(termin) {
+        var now = new Date().getTime();
+        var end = new Date(termin).getTime();
+
+        var dni = (end - now) / (60*60*24*1000);
+
+        //minął termin
+        if (dni < 0) {
+            return 'czerwony';
+        }
+        // dwa dni
+        if (dni < 2) {
+            return 'pomarancz';
+        }
+        // tydzien
+        if (dni < 7) {
+            return 'zolty';
+        }
+        return 'zielony';
+
+    }
 }
 
 export default Zadania;

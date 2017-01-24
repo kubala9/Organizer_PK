@@ -46,12 +46,18 @@ class ObslugaUzytkownika {
             Notyfikacje.powiadomienie('Pracownik ' + uzytkownik.name + ' nie został zapisany!');
           }
         } else {
-          if (Uzytkownik.nowy(uzytkownik)) {
-            Notyfikacje.zamknij();
-            Notyfikacje.powiadomienie('Pracownik ' + uzytkownik.name + ' został dodany!');
-          } else {
-            Notyfikacje.powiadomienie('Pracownik ' + uzytkownik.name + ' nie został dodany!');
-          }
+            if (Uzytkownik.pobierzWszystkich().filter(i => i.login === uzytkownik.login).length !== 0) {
+                Notyfikacje.zamknij();
+                Notyfikacje.powiadomienie('Pracownik o takim loginie już istnieje!');
+            } else {
+                if (Uzytkownik.nowy(uzytkownik)) {
+                    Notyfikacje.zamknij();
+                    Notyfikacje.powiadomienie('Pracownik ' + uzytkownik.name + ' został dodany!');
+                } else {
+                    Notyfikacje.zamknij();
+                    Notyfikacje.powiadomienie('Pracownik ' + uzytkownik.name + ' nie został dodany!');
+                }
+            }
         }
       };
     };

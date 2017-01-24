@@ -120,6 +120,10 @@ class ObslugaZadan {
                 });
         };
 
+        this.bgPriority = zadanie => {
+            return Zadania.getColor(zadanie.termin);
+        };
+
         this.$onDestroy = function() {
             clearTimeout(timeout);
             timeout = null;

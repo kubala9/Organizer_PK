@@ -5,7 +5,6 @@ class Klient {
         "ngInject";
 
         this.listaklientow = [];
-        this.id = $rootScope.zalogowany.id;
 
         this.wczytaj = function wczytaj() {
             if (angular.isDefined($localStorage.klient) && $rootScope.zalogowany) {
@@ -25,7 +24,7 @@ class Klient {
             } else {
                 klient.id = 1;
             }
-            klient.id_user = this.id;
+            klient.id_user = $rootScope.zalogowany.id;
 
             this.listaklientow.push(klient);
 
@@ -55,15 +54,16 @@ class Klient {
             this.zapisz();
             return true;
         };
+        this.pobierz = () => {
+            this.wczytaj();
+
+            return this.listaklientow.filter(el => el.id_user === $rootScope.zalogowany.id);
+        };
 
         this.wczytaj();
     }
 
-    pobierz() {
-        this.wczytaj();
 
-        return this.listaklientow.filter(el => el.id_user === this.id);
-    }
 
 }
 

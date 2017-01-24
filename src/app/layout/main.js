@@ -4,10 +4,10 @@ class App {
   constructor($rootScope, $localStorage, $state, Uzytkownik) {
       "ngInject";
 
-      $rootScope.zalogowany = Uzytkownik.pobierzWszystkich()[0];
-      $rootScope.zalogowany.manager = 1;
-      $rootScope.zalogowany.uzytkownik = 1;
-
+       $rootScope.zalogowany = Uzytkownik.pobierzWszystkich()[0];
+       $rootScope.zalogowany.manager = 1;
+       $rootScope.zalogowany.uzytkownik = 1;
+      //
       $state.go('organizer.projekt');
 
       if (!angular.isArray($localStorage.uzytkownik)) {

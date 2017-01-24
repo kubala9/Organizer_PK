@@ -121,7 +121,7 @@ class ObslugaZadan {
         };
 
         this.bgPriority = zadanie => {
-            return Zadania.getColor(zadanie.termin);
+            return Zadania.getColor(zadanie);
         };
 
         this.$onDestroy = function() {

@@ -5,8 +5,15 @@
         <ng-md-icon icon="info" style="fill: grey; display: inline-block;" size="20"></ng-md-icon> Brak zadań!
     </div>
 
+
+    <md-input-container>
+        <md-checkbox ng-model="niezrealizowane" aria-label="Zrealizowane" ng-true-value="1" ng-false-value="0">
+            Wyświetl tylko niezrealizowane
+        </md-checkbox>
+    </md-input-container>
+
     <md-list>
-        <md-list-item ng-repeat="zadanie in $ctrl.zadania | orderBy: 'termin'" class="md-3-line" ng-class="$ctrl.bgPriority(zadanie);">
+        <md-list-item ng-repeat="zadanie in $ctrl.zadania | orderBy: 'termin' | filter: filtrujZrealizowane" class="md-3-line" ng-class="$ctrl.bgPriority(zadanie);">
             <div class="md-list-item-text">
                 <h3><strong>{{ zadanie.nazwa }}</strong></h3>
 

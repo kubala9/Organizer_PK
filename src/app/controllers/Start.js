@@ -21,6 +21,7 @@ class Start {
       if (user.length === 1) {
         Notyfikacje.powiadomienie('Zalogowałeś się.');
 
+        console.log(user);
         $rootScope.zalogowany = user[0];
         $rootScope.zalogowany.uzytkownik = 1;
 

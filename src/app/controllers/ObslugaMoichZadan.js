@@ -35,7 +35,14 @@ class ObslugaMoichZadan {
         };
 
         this.bgPriority = zadanie => {
-            return Zadania.getColor(zadanie.termin);
+            return Zadania.getColor(zadanie);
+        };
+
+        $scope.filtrujZrealizowane = item => {
+            if ($scope.niezrealizowane) {
+                return item.zrealizowane !== 1;
+            }
+            return item;
         };
 
         this.$onDestroy = function() {

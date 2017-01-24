@@ -5,9 +5,9 @@ class Zadania {
         "ngInject";
 
         this.lista = [];
-        this.id = $rootScope.zalogowany.id;
 
         this.wczytaj = function wczytaj() {
+            this.id = $rootScope.zalogowany.id;
             if (angular.isDefined($localStorage.zadanie)) {
                 this.lista = $localStorage.zadanie;
             }
@@ -89,9 +89,13 @@ class Zadania {
         return true;
     }
 
-    getColor(termin) {
+    getColor(zadanie) {
+        if (zadanie.zrealizowane === 1) {
+            return '';
+        }
+
         var now = new Date().getTime();
-        var end = new Date(termin).getTime();
+        var end = new Date(zadanie.termin).getTime();
 
         var dni = (end - now) / (60*60*24*1000);
 

@@ -8,6 +8,7 @@ export const header = {
     }, true);
 
     $scope.wyloguj = () => {
+      $rootScope.zalogowany.id = null;
       $rootScope.zalogowany = {};
       $state.go('organizer.start');
       Notyfikacje.powiadomienie('Zostałeś wylogowany.');

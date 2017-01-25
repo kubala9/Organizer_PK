@@ -1,0 +1,66 @@
+module organizer {
+
+public interface Zadania
+ {
+	object[] wczytaj { get; }
+	object[] zapisz { set; }
+	bool nowy(object[] zadanie);	
+	bool edytuj(object[] zadanie);
+	bool usun(object[] zadanie);
+	bool zrealizuj(int id);
+	object[] pobierz(int idProjekt);
+	object[] pobierzPerPracownik(int id);
+	string getColor(datetime termin);
+ }
+
+public interface Uzytkownik
+ {
+	object[] wczytaj { get; }
+	object[] zapisz { set; }
+	bool nowy(object[] uzytkownik, int manager);	
+	bool edytuj(object[] uzytkownik);
+	bool usun(object[] uzytkownik);
+	object[] pobierzWszystkich { get; }
+ }
+
+public interface Projekt
+ {
+	object[] wczytaj { get; }
+	object[] zapisz { set; }
+	bool nowy(object[] projekt);	
+	bool edytuj(object[] zadanie);
+	bool usun(object[] zadanie);
+	bool zrealizuj(int id);
+	object[] pobierz(int archiwum);
+	object[] pobierzWszystkie { get; }
+
+ }
+
+public interface Notyfikacje
+ {
+	void zamknij(); 
+	string powiadomienie(string tekst);
+	void potwierdzenie(string tekst, string ok, string anuluj);
+ }
+
+public interface Notatki
+ {
+	object[] wczytaj { get; }
+	object[] zapisz { set; }
+	bool nowy(object[] notatki);	
+	bool edytuj(object[] notatki);
+	bool usun(object[] notatki);
+	object[] pobierz();
+ }
+
+public interface Klient
+ {
+	object[] wczytaj { get; }
+	object[] zapisz { set; }
+	bool nowy(object[] klient);	
+	bool edytuj(object[] klient);
+	bool usun(object[] klient);
+	object[] pobierz();
+ }
+
+}

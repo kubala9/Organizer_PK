@@ -1,140 +1,33 @@
-# Apteka
+# Developerator
 
-##Inicjowanie:
-* wchodzimy do folderu gdzie chcemy mieć projekt (w konsoli)
-* git clone git@github.com:kubala9/Apteka.git (musimy mieć wpięte klucze publiczne na github)
-* npm install (potrzebny nodeJS na komputerze)
-* po zainstalowaniu zależoności cała aplikacja znajduje się w /src/app
-* uruchamiamy aplikację przez gulp serve
-* aplikację mamy uruchomioną pod http://localhost:3000
-* terminal z taskiem gulpowym musi być ciągle otwarty (automatycznie odświeża zmieniające się style, skrypty i widoki)
+##O projekcie:
+Developerator to aplikacja internetowa, wykonana w języku Javascript, z użyciem Angular, NodeJS, Sass oraz Gulp. 
+Aplikacja ma pomóc osobie zarządzającej projektami (Projekt Manager) w organizacji pracy. Każdy Project Manager posiada indywidualne konto, na którym może:
 
-##Do poczytania:
-* Angular material: https://material.angularjs.org/latest/
-* Ikonki: https://klarsys.github.io/angular-material-icons/
-* Funkcje strzałkowe: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
-* storage: https://github.com/gsklee/ngStorage
+- zarządzać pracownikami (zakładka PRACOWNICY), czyli dodawać podwładnych pod siebie pracowników nadając im login i hasło specyficzne dla siebie np. manager_worker1, manager_worker2 etc., może ich edytować oraz usuwać.
+
+- zarządzać klientami (zakładka KLIENCI) - podobnie jak w przypadku pracowników, może dodawać/usuwać/edytować klientów, z którymi prowadzi współpracę.
+
+- zarządzać projektami (zakładka PROJEKTY) - tu skupia się najważniejsza część aplikacji. Project Manager po przejściu do zakładki PROJEKTY, widzi po prawej stronie listę projektów, gdzie wybiera dany klikająć na checkbox przy nazwie projektu lub dodaje nowy projekt. Aby dodać nowy projekt należy wpisać jego nazwę, opis,  klienta, dla którego projekt jest wykonywany, datę zakończenia(deadline) oraz można zaznaczyć wykonanie projektu (projekty zrealizowane trafiają do archiwum). Gdy już wybierzemy dany projekt z listy projektów, po środku wyświetla się lista zadań związana z danym projektem. Możemy dodać nowe zadanie, gdzie wpisujemy nazwę, opis, datę deadline oraz pracownika, któremu powierzamy to zadanie. Zadania wyświetlają się w 5ciu kolorach w zależności od czasu pozostałego do deadline'a:
+* kolor domyślny(biały) - zadanie wykonane
+* kolor zielony - powyżej tygodnia do deadline
+* kolor żółty - od 7 do 2 dni do deadline
+* kolor pomarańczowy - od 2 do 0 dni do deadline
+* kolor czerwony - deadline został przekroczony
+
+- podglądać swoje zadania (zakładka MOJE ZADANIA) - w zakładce MOJE ZADANIA, dostępnej również dla Pracownika, można podejrzeć swoje zadania oraz odhaczyć ich wykonanie. W przeglądaniu zadań pomocny jest filtr zadań wykonanych i niewykonanych.
+
+- dodawać notatki (zakładka NOTATKI) - podgląd, dodawanie, edycja i usuwanie notatek. Opcja dostępna dla wszystkich użytkowników.
+
 
 ##Technologia:
 * http://yeoman.io/
-* http://fountainjs.io/
 * https://angularjs.org/
+* http://gulpjs.com/
 
-
-##Tip
-* w edytorze polecam kliknąć prawym klawiszem myszy na folder .tmp, "Mark directory as", "Exclude" (IDE - PHP Storm)
-
-##Dokumentacja:
-App
-- główna klasa 'nad' wszystkimi klasami
-- firstInit()
-
-Start:
-- Korzysta z Sprzedajacy, Kupujacy, Notyfikacje
-- kupujacy[]
-- sprzedajacy[]
-- logujJakoSprzedajacy()
-- logujJakoKupujacy()
-- rejestrujJakoKupujacy()
-
-Notyfikacje:
-- powiadomienie()
-- potwierdzenie()
-- zamknij()
-
-ObslugaSprzedajacy:
-- Korzysta z Sprzedajacy, Notyfikacje
-- sprzedawcy[] - lista sprzedawców
-- — wczytaj() - prywatna metoda
-- — modyfikowanie() - prywatna metoda
-- modyfikacja()
-- usun()
-
-Sprzedajacy:
-- lista[] - lista sprzedawców
-- wczytaj()
-- zapisz()
-- nowy()
-- pobierz()
-- edytuj()
-- usun()
-- getSprzedawca()
-
-ObslugaKupujacy:
-- Korzysta z Kupujacy, Notyfikacje
-- kupujacy[] - lista kupujacych
-- — wczytaj() - prywatna metoda
-- — modyfikowanie() - prywatna metoda
-- modyfikacja()
-- usun()
-
-Kupujacy:
-- listakupujacych[] 
-- wczytaj()
-- zapisz()
-- nowy()
-- edytuj()
-- usun()
-- pobierz()
-- getKlient()
-
-ObsługaProdukow:
-- Korzysta z Produkt, Notyfikacje
-- produkty[] - lista produktów
-- — wczytaj() - prywatna metoda
-- — modyfikowanie() - prywatna metoda
-- modyfikacja()
-- usun()
-
-Produkt:
-- listaproduktow[]
-- wczytaj()
-- zapisz()
-- nowy()
-- pobierz()
-- edytuj()
-- usun()
-- getProdukt()
-- getCena()
-- sprzedaj()
-
-
-ObsługaSprzedazy:
-- korzysta z Sprzedaz, Kupujacy, Sprzedajacy, Produkt, Notyfikacje
-- sprzedaz[]
-- kupujacy[]
-- produkty[]
-- sprzedajacy[]
-- modyfikacja()
-- usun()
-- zrealizuj()
-- getKlient()
-- filtrujZrealizowane()
-- - modyfikowanie() - prywatna
-
-Sprzedaz:
-- lista[]
-- wczytaj()
-- zapisz()
-- nowy()
-- pobierz()
-- edytuj()
-- usun()
-- getPusty()
-- zrealizuj()
-
-ObslugaZamowien:
-- korzysta z Notyfikacje, Produkt, Sprzedaz
-- produkty[]
-- koszyk[]
-- dodajDoKoszyka() 
-- pokazKoszyk()
-- - dodawanie() - prywatna
-- - sprawdzKoszyk() - prywatna
-
-
-Zamowienie:
-- usuwamy tą klasę!
+Cała aplikacja znajduje się w folderze src.
+Aplikacja jest zaprojektowana zgodnie z wzorcem MVC (Model-View-Controller). Język JavaScript nie oddaje w sposób bezpośredni komponentowości tej aplikacji, jednak łatwo można wyodrębnić komponenty (controllers), które korzystają z interfejsów (services). Interfejs graficzny znajduje się w folderach "views" oraz "layout".
+Dokumentacja znajduje się w folderze docs.
 
 
 
